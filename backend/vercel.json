@@ -9,13 +9,19 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/server.js",
+      "methods": ["OPTIONS"],
       "headers": {
         "Access-Control-Allow-Origin": "https://shopai-app.netlify.app",
         "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With, Accept, x-session-id",
         "Access-Control-Allow-Credentials": "true"
-      }
+      },
+      "status": 204,
+      "continue": false
+    },
+    {
+      "src": "/(.*)",
+      "dest": "src/server.js"
     }
   ]
 }
