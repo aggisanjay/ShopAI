@@ -48,16 +48,22 @@ export const generateTokenPair = (user) => {
   };
 };
 
+// ✅ FIXED - works cross-origin
 export const setRefreshTokenCookie = (res, token) => {
   res.cookie('refreshToken', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    secure: true,                // always true (Render uses HTTPS)
+    sameSite: 'none',            // ✅ required for cross-origin cookies
+    maxAge: 7 * 24 * 60 * 60 * 1000,
     path: '/api/auth/refresh',
   });
 };
 
 export const clearRefreshTokenCookie = (res) => {
-  res.clearCookie('refreshToken', { path: '/api/auth/refresh' });
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',            // ✅ must match how it was set
+    path: '/api/auth/refresh',
+  });
 };
