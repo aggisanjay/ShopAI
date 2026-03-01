@@ -1,15 +1,21 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "api/index.js",
-            "use": "@vercel/node"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "api/index.js"
-        }
-    ]
+  "version": 2,
+  "builds": [
+    {
+      "src": "src/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "src/server.js",
+      "headers": {
+        "Access-Control-Allow-Origin": "https://shopai-app.netlify.app",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With, Accept, x-session-id",
+        "Access-Control-Allow-Credentials": "true"
+      }
+    }
+  ]
 }
