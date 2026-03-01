@@ -6181,3 +6181,212 @@
 2026-03-01 12:17:36 [http]: ::1 - - [01/Mar/2026:06:47:36 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
 2026-03-01 12:17:36 [http]: ::1 - - [01/Mar/2026:06:47:36 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
 2026-03-01 12:17:40 [http]: ::1 - - [01/Mar/2026:06:47:40 +0000] "GET /api/auth/google HTTP/1.1" 302 428 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:18:45 [info]: ✅ MongoDB Connected: ac-uadbl67-shard-00-01.iiqtqee.mongodb.net
+2026-03-01 12:18:45 [info]: ✅ Redis ready
+2026-03-01 12:18:45 [info]: 🔧 Initializing background workers...
+2026-03-01 12:18:45 [info]: 📧 Email worker ready
+2026-03-01 12:18:45 [info]: 📊 Analytics worker ready
+2026-03-01 12:18:46 [info]: ✅ Redis connected
+2026-03-01 12:18:47 [info]: 🤖 Recommendation worker ready
+2026-03-01 12:18:47 [info]: 🛒 Abandoned cart worker ready
+2026-03-01 12:18:47 [info]: ✅ Background workers initialized
+2026-03-01 12:18:47 [info]: 🚀 Server running on port 5000 in development mode
+2026-03-01 12:19:26 [error]: Error: No token provided
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/middlewares/auth.middleware.js:11:20
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:280:10)
+2026-03-01 12:19:26 [http]: ::1 - - [01/Mar/2026:06:49:26 +0000] "GET /api/auth/me HTTP/1.1" 401 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:19:26 [error]: Error: No token provided
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/middlewares/auth.middleware.js:11:20
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:280:10)
+2026-03-01 12:19:26 [error]: Error: No refresh token
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at AuthService.refreshTokens (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/services/auth.service.js:52:39)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/controllers/auth.controller.js:32:36
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+2026-03-01 12:19:26 [http]: ::1 - - [01/Mar/2026:06:49:26 +0000] "GET /api/auth/me HTTP/1.1" 401 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:19:26 [http]: ::1 - - [01/Mar/2026:06:49:26 +0000] "POST /api/auth/refresh HTTP/1.1" 401 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:19:26 [http]: ::1 - - [01/Mar/2026:06:49:26 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:19:26 [http]: ::1 - - [01/Mar/2026:06:49:26 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:19:26 [http]: ::1 - - [01/Mar/2026:06:49:26 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:19:27 [http]: ::1 - - [01/Mar/2026:06:49:27 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:19:27 [http]: ::1 - - [01/Mar/2026:06:49:27 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:19:27 [http]: ::1 - - [01/Mar/2026:06:49:27 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:19:30 [http]: ::1 - - [01/Mar/2026:06:49:30 +0000] "GET /api/auth/google HTTP/1.1" 302 428 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:00 [error]: Error: No token provided
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/middlewares/auth.middleware.js:11:20
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:280:10)
+2026-03-01 12:23:00 [http]: ::1 - - [01/Mar/2026:06:53:00 +0000] "GET /api/auth/me HTTP/1.1" 401 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:00 [error]: Error: No refresh token
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at AuthService.refreshTokens (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/services/auth.service.js:52:39)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/controllers/auth.controller.js:32:36
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+2026-03-01 12:23:00 [error]: Error: No token provided
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/middlewares/auth.middleware.js:11:20
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:280:10)
+2026-03-01 12:23:00 [http]: ::1 - - [01/Mar/2026:06:53:00 +0000] "POST /api/auth/refresh HTTP/1.1" 401 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:00 [http]: ::1 - - [01/Mar/2026:06:53:00 +0000] "GET /api/auth/me HTTP/1.1" 401 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:00 [http]: ::1 - - [01/Mar/2026:06:53:00 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:00 [http]: ::1 - - [01/Mar/2026:06:53:00 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:00 [http]: ::1 - - [01/Mar/2026:06:53:00 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:00 [error]: Error: No refresh token
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at AuthService.refreshTokens (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/services/auth.service.js:52:39)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/controllers/auth.controller.js:32:36
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+2026-03-01 12:23:00 [http]: ::1 - - [01/Mar/2026:06:53:00 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:00 [http]: ::1 - - [01/Mar/2026:06:53:00 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:00 [http]: ::1 - - [01/Mar/2026:06:53:00 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:00 [http]: ::1 - - [01/Mar/2026:06:53:00 +0000] "POST /api/auth/refresh HTTP/1.1" 401 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:19 [error]: Error: No token provided
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/middlewares/auth.middleware.js:11:20
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:280:10)
+2026-03-01 12:23:19 [http]: ::1 - - [01/Mar/2026:06:53:19 +0000] "GET /api/auth/me HTTP/1.1" 401 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:19 [error]: Error: No token provided
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/middlewares/auth.middleware.js:11:20
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:280:10)
+2026-03-01 12:23:19 [error]: Error: No refresh token
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at AuthService.refreshTokens (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/services/auth.service.js:52:39)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/controllers/auth.controller.js:32:36
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+2026-03-01 12:23:19 [http]: ::1 - - [01/Mar/2026:06:53:19 +0000] "GET /api/auth/me HTTP/1.1" 401 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:19 [http]: ::1 - - [01/Mar/2026:06:53:19 +0000] "POST /api/auth/refresh HTTP/1.1" 401 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:19 [http]: ::1 - - [01/Mar/2026:06:53:19 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:20 [http]: ::1 - - [01/Mar/2026:06:53:20 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:20 [http]: ::1 - - [01/Mar/2026:06:53:20 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:20 [http]: ::1 - - [01/Mar/2026:06:53:20 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:20 [http]: ::1 - - [01/Mar/2026:06:53:20 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:20 [http]: ::1 - - [01/Mar/2026:06:53:20 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:23 [http]: ::1 - - [01/Mar/2026:06:53:23 +0000] "GET /api/auth/google HTTP/1.1" 302 428 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:37 [http]: ::1 - - [01/Mar/2026:06:53:37 +0000] "GET /api/auth/google/callback?iss=https%3A%2F%2Faccounts.google.com&code=4%2F0AfrIepBvtHahEbsFBi0Cu2b4YrnFMyBI6aQReWfWGI7f3Y8kJAL_QXW-tQtghvnWSY9hxQ&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=1&prompt=consent HTTP/1.1" 302 299 "https://accounts.google.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:38 [http]: ::1 - - [01/Mar/2026:06:53:38 +0000] "GET /api/auth/me HTTP/1.1" 200 842 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:38 [http]: ::1 - - [01/Mar/2026:06:53:38 +0000] "GET /api/cart HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:38 [http]: ::1 - - [01/Mar/2026:06:53:38 +0000] "GET /api/auth/me HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:38 [http]: ::1 - - [01/Mar/2026:06:53:38 +0000] "GET /api/auth/me HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:38 [http]: ::1 - - [01/Mar/2026:06:53:38 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:38 [http]: ::1 - - [01/Mar/2026:06:53:38 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:38 [http]: ::1 - - [01/Mar/2026:06:53:38 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:38 [http]: ::1 - - [01/Mar/2026:06:53:38 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:38 [http]: ::1 - - [01/Mar/2026:06:53:38 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:38 [http]: ::1 - - [01/Mar/2026:06:53:38 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:39 [http]: ::1 - - [01/Mar/2026:06:53:39 +0000] "GET /api/recommendations/personalized?limit=10 HTTP/1.1" 200 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:39 [http]: ::1 - - [01/Mar/2026:06:53:39 +0000] "GET /api/recommendations/personalized?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:55 [http]: ::1 - - [01/Mar/2026:06:53:55 +0000] "GET /api/orders/my?limit=10 HTTP/1.1" 304 - "http://localhost:5173/orders" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:23:55 [http]: ::1 - - [01/Mar/2026:06:53:55 +0000] "GET /api/orders/my?limit=10 HTTP/1.1" 304 - "http://localhost:5173/orders" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:05 [http]: ::1 - - [01/Mar/2026:06:54:05 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:05 [http]: ::1 - - [01/Mar/2026:06:54:05 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:05 [http]: ::1 - - [01/Mar/2026:06:54:05 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:05 [http]: ::1 - - [01/Mar/2026:06:54:05 +0000] "GET /api/recommendations/personalized?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:05 [http]: ::1 - - [01/Mar/2026:06:54:05 +0000] "POST /api/auth/logout HTTP/1.1" 200 52 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:06 [http]: ::1 - - [01/Mar/2026:06:54:06 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:06 [http]: ::1 - - [01/Mar/2026:06:54:06 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:06 [http]: ::1 - - [01/Mar/2026:06:54:06 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:06 [http]: ::1 - - [01/Mar/2026:06:54:06 +0000] "GET /api/recommendations/personalized?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:09 [http]: ::1 - - [01/Mar/2026:06:54:09 +0000] "GET /api/auth/google HTTP/1.1" 302 428 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:18 [http]: ::1 - - [01/Mar/2026:06:54:18 +0000] "GET /api/auth/google/callback?iss=https%3A%2F%2Faccounts.google.com&code=4%2F0AfrIepCZB5wiMPjaTlnhtCmWZWqUAHXn0te_W-P1e-lHmdaCFYmRnd3QAnYrD3j0gZL02A&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=consent HTTP/1.1" 302 298 "https://accounts.google.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:19 [http]: ::1 - - [01/Mar/2026:06:54:19 +0000] "GET /api/auth/me HTTP/1.1" 200 581 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:19 [http]: ::1 - - [01/Mar/2026:06:54:19 +0000] "GET /api/auth/me HTTP/1.1" 429 78 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:19 [http]: ::1 - - [01/Mar/2026:06:54:19 +0000] "GET /api/auth/me HTTP/1.1" 429 78 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:19 [http]: ::1 - - [01/Mar/2026:06:54:19 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:19 [http]: ::1 - - [01/Mar/2026:06:54:19 +0000] "GET /api/cart HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:19 [http]: ::1 - - [01/Mar/2026:06:54:19 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:19 [http]: ::1 - - [01/Mar/2026:06:54:19 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:19 [http]: ::1 - - [01/Mar/2026:06:54:19 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:19 [http]: ::1 - - [01/Mar/2026:06:54:19 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:19 [http]: ::1 - - [01/Mar/2026:06:54:19 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:20 [http]: ::1 - - [01/Mar/2026:06:54:20 +0000] "GET /api/recommendations/personalized?limit=10 HTTP/1.1" 200 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:20 [http]: ::1 - - [01/Mar/2026:06:54:20 +0000] "GET /api/recommendations/personalized?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:42 [http]: ::1 - - [01/Mar/2026:06:54:42 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:42 [http]: ::1 - - [01/Mar/2026:06:54:42 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:42 [http]: ::1 - - [01/Mar/2026:06:54:42 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:42 [http]: ::1 - - [01/Mar/2026:06:54:42 +0000] "GET /api/recommendations/personalized?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:42 [http]: ::1 - - [01/Mar/2026:06:54:42 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:42 [http]: ::1 - - [01/Mar/2026:06:54:42 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:42 [http]: ::1 - - [01/Mar/2026:06:54:42 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:42 [http]: ::1 - - [01/Mar/2026:06:54:42 +0000] "GET /api/recommendations/personalized?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:52 [http]: ::1 - - [01/Mar/2026:06:54:52 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/products?category=69a2b6399ccd2cd1d58c9913" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:52 [http]: ::1 - - [01/Mar/2026:06:54:52 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/products?category=69a2b6399ccd2cd1d58c9913" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:53 [http]: ::1 - - [01/Mar/2026:06:54:53 +0000] "GET /api/products?category=69a2b6399ccd2cd1d58c9913&sort=trending&page=1 HTTP/1.1" 200 - "http://localhost:5173/products?category=69a2b6399ccd2cd1d58c9913" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:53 [http]: ::1 - - [01/Mar/2026:06:54:53 +0000] "GET /api/products?category=69a2b6399ccd2cd1d58c9913&sort=trending&page=1 HTTP/1.1" 304 - "http://localhost:5173/products?category=69a2b6399ccd2cd1d58c9913" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:56 [http]: ::1 - - [01/Mar/2026:06:54:56 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:56 [http]: ::1 - - [01/Mar/2026:06:54:56 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:56 [http]: ::1 - - [01/Mar/2026:06:54:56 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:56 [http]: ::1 - - [01/Mar/2026:06:54:56 +0000] "GET /api/recommendations/personalized?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:57 [http]: ::1 - - [01/Mar/2026:06:54:57 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:57 [http]: ::1 - - [01/Mar/2026:06:54:57 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:57 [http]: ::1 - - [01/Mar/2026:06:54:57 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:24:57 [http]: ::1 - - [01/Mar/2026:06:54:57 +0000] "GET /api/recommendations/personalized?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:25:19 [http]: ::1 - - [01/Mar/2026:06:55:19 +0000] "POST /api/auth/logout HTTP/1.1" 429 78 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"

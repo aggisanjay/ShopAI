@@ -2868,3 +2868,113 @@
     at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
     at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
     at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+2026-03-01 12:19:26 [error]: Error: No token provided
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/middlewares/auth.middleware.js:11:20
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:280:10)
+2026-03-01 12:19:26 [error]: Error: No token provided
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/middlewares/auth.middleware.js:11:20
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:280:10)
+2026-03-01 12:19:26 [error]: Error: No refresh token
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at AuthService.refreshTokens (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/services/auth.service.js:52:39)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/controllers/auth.controller.js:32:36
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+2026-03-01 12:23:00 [error]: Error: No token provided
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/middlewares/auth.middleware.js:11:20
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:280:10)
+2026-03-01 12:23:00 [error]: Error: No refresh token
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at AuthService.refreshTokens (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/services/auth.service.js:52:39)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/controllers/auth.controller.js:32:36
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+2026-03-01 12:23:00 [error]: Error: No token provided
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/middlewares/auth.middleware.js:11:20
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:280:10)
+2026-03-01 12:23:00 [error]: Error: No refresh token
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at AuthService.refreshTokens (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/services/auth.service.js:52:39)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/controllers/auth.controller.js:32:36
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+2026-03-01 12:23:19 [error]: Error: No token provided
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/middlewares/auth.middleware.js:11:20
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:280:10)
+2026-03-01 12:23:19 [error]: Error: No token provided
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/middlewares/auth.middleware.js:11:20
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:280:10)
+2026-03-01 12:23:19 [error]: Error: No refresh token
+    at ApiError.unauthorized (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/apiResponse.js:44:12)
+    at AuthService.refreshTokens (file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/services/auth.service.js:52:39)
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/controllers/auth.controller.js:32:36
+    at file:///C:/Users/aggis/Desktop/Ai-Ecommerce-recomdation/backend/src/utils/asyncHandler.js:2:19
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\layer.js:95:5)
+    at C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (C:\Users\aggis\Desktop\Ai-Ecommerce-recomdation\backend\node_modules\express\lib\router\index.js:346:12)
