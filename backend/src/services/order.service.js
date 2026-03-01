@@ -125,9 +125,8 @@ export class OrderService {
         if (user?.email) {
           await addEmailJob({
             to: user.email,
-            subject: `Order Confirmed - #${order.orderNumber}`,
             template: 'orderConfirm',
-            data: { orderNumber: order.orderNumber, totalAmount: order.totalAmount },
+            data: order, // Pass full order for detailed summary
           });
         }
       } catch (emailErr) {
@@ -218,6 +217,24 @@ export class OrderService {
     }
 
     await order.save();
+
+    // Send delivery email
+    if (status === 'delivered') {
+      try {
+        const User = (await import('../models/User.model.js')).default;
+        const user = await User.findById(order.user).select('email').lean();
+        if (user?.email) {
+          await addEmailJob({
+            to: user.email,
+            template: 'orderDelivered',
+            data: order,
+          });
+        }
+      } catch (err) {
+        logger.error('Failed to queue delivery email:', err);
+      }
+    }
+
     return order;
   }
 

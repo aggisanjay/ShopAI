@@ -27,9 +27,94 @@ const templates = {
     subject: 'Welcome to ShopAI! 🎉',
     html: `<h1>Hi ${name}!</h1><p>Welcome to ShopAI.</p>`,
   }),
-  orderConfirm: ({ orderNumber, totalAmount }) => ({
-    subject: `Order Confirmed #${orderNumber}`,
-    html: `<h2>Order #${orderNumber} confirmed!</h2><p>Total: ₹${totalAmount}</p>`,
+  orderConfirm: (order) => ({
+    subject: `Order Confirmed - #${order.orderNumber}`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; color: #1e293b;">
+        <h2 style="color: #0f172a; margin-top: 0;">Order Confirmed! 🎉</h2>
+        <p>Hi ${order.shippingAddress.fullName},</p>
+        <p>Thank you for your order! Your order <strong>#${order.orderNumber}</strong> has been received and is being processed.</p>
+        
+        <h3 style="border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; margin-top: 24px;">Order Summary</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+          <thead>
+            <tr style="text-align: left; color: #64748b; font-size: 14px;">
+              <th style="padding: 12px 0;">Item</th>
+              <th style="padding: 12px 0; text-align: center;">Qty</th>
+              <th style="padding: 12px 10px; text-align: right;">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${order.items.map(item => `
+              <tr style="border-bottom: 1px solid #f1f5f9;">
+                <td style="padding: 12px 0;">${item.name}</td>
+                <td style="padding: 12px 0; text-align: center;">${item.quantity}</td>
+                <td style="padding: 12px 10px; text-align: right;">₹${item.totalPrice.toLocaleString()}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        
+        <div style="background: #f8fafc; padding: 16px; border-radius: 8px; margin-bottom: 24px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span style="color: #64748b;">Subtotal</span>
+            <span>₹${order.subtotal.toLocaleString()}</span>
+          </div>
+          ${order.discountAmount ? `
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #10b981;">
+            <span>Discount</span>
+            <span>-₹${order.discountAmount.toLocaleString()}</span>
+          </div>` : ''}
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span style="color: #64748b;">Shipping</span>
+            <span>${order.shippingCost === 0 ? 'FREE' : `₹${order.shippingCost}`}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+            <span style="color: #64748b;">Tax (GST)</span>
+            <span>₹${order.taxAmount.toLocaleString()}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-top: 12px; font-weight: bold; font-size: 18px; border-top: 1px solid #e2e8f0; pt: 12px;">
+            <span>Total</span>
+            <span style="color: #0f172a;">₹${order.totalAmount.toLocaleString()}</span>
+          </div>
+        </div>
+        
+        <div style="margin-top: 24px;">
+          <h4 style="margin-bottom: 8px;">Shipping Address:</h4>
+          <p style="color: #475569; font-size: 14px; margin: 0;">
+            ${order.shippingAddress.addressLine1}${order.shippingAddress.addressLine2 ? `, ${order.shippingAddress.addressLine2}` : ''}<br>
+            ${order.shippingAddress.city}, ${order.shippingAddress.state} ${order.shippingAddress.postalCode}
+          </p>
+        </div>
+      </div>
+    `
+  }),
+  orderDelivered: (order) => ({
+    subject: `Your order #${order.orderNumber} has been delivered! 📦`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; color: #1e293b;">
+        <h2 style="color: #0f172a; margin-top: 0;">Delivered! 📦</h2>
+        <p>Hi ${order.shippingAddress.fullName},</p>
+        <p>Great news! Your order <strong>#${order.orderNumber}</strong> has been delivered. We hope you love your purchase!</p>
+        
+        <h3 style="border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; margin-top: 24px;">Delivery Summary</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+          <tbody>
+            ${order.items.map(item => `
+              <tr style="border-bottom: 1px solid #f1f5f9;">
+                <td style="padding: 12px 0;">${item.name}</td>
+                <td style="padding: 12px 0; text-align: center;">× ${item.quantity}</td>
+                <td style="padding: 12px 0; text-align: right;">₹${item.totalPrice.toLocaleString()}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        
+        <div style="text-align: center; margin-top: 32px;">
+          <p style="color: #64748b; font-size: 14px;">How was your experience? Feel free to leave a review on our website.</p>
+        </div>
+      </div>
+    `
   }),
   resetPassword: ({ name, resetUrl }) => ({
     subject: 'Reset Your Password',

@@ -3,9 +3,10 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMe } from './store/slices/authSlice.js';
+import { fetchMe, setCredentials } from './store/slices/authSlice.js';
+import toast from 'react-hot-toast';
 import { fetchCart } from './store/slices/cartSlice.js';
-import { selectIsAuthenticated } from './store/slices/authSlice.js';
+import { selectIsAuthenticated, selectIsInitialized } from './store/slices/authSlice.js';
 import Navbar from './components/layout/Navbar.jsx';
 import Footer from './components/layout/Footer.jsx';
 import CartDrawer from './components/layout/CartDrawer.jsx';
@@ -59,7 +60,9 @@ function ScrollToTop() {
 
 export default function App() {
   const dispatch = useDispatch();
+  const location = useLocation();
   const isAuth = useSelector(selectIsAuthenticated);
+  const isInitialized = useSelector(selectIsInitialized);
 
   // Init: check auth & load cart
   useEffect(() => {
@@ -67,10 +70,25 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    if (token) {
+      dispatch(setCredentials({ accessToken: token }));
+      const url = new URL(window.location.href);
+      url.searchParams.delete('token');
+      window.history.replaceState({}, document.title, url.pathname + url.search);
+      toast.success('Signed in with Google! 🚀');
+      dispatch(fetchMe()); // Fetch user profile after getting token
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
     if (isAuth) dispatch(fetchCart());
   }, [isAuth]);
 
   const isAdminPath = location.pathname.startsWith('/admin');
+
+  if (!isInitialized) return <PageLoader />;
 
   return (
     <>

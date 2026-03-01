@@ -108,6 +108,7 @@ export default authSlice.reducer;
 // Selectors
 export const selectUser = (state) => state.auth.user;
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
+export const selectIsInitialized = (state) => state.auth.isInitialized;
 export const selectAuthLoading = (state) => state.auth.isLoading;
 export const selectIsAdmin = (state) => state.auth.user?.role === 'admin';
 export const selectIsVendor = (state) => ['admin', 'vendor'].includes(state.auth.user?.role);

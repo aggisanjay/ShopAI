@@ -60,3 +60,25 @@ export const changePassword = asyncHandler(async (req, res) => {
 export const getMe = asyncHandler(async (req, res) => {
   ApiResponse.success(res, { user: req.user.toSafeObject() });
 });
+
+// Google OAuth
+export const googleLogin = asyncHandler(async (req, res) => {
+  const { getGoogleAuthUrl } = await import('../config/googleAuth.config.js');
+  const url = getGoogleAuthUrl();
+  res.redirect(url);
+});
+
+export const googleCallback = asyncHandler(async (req, res) => {
+  const { code } = req.query;
+  const { getGoogleTokens, getGoogleUser } = await import('../config/googleAuth.config.js');
+  
+  const { id_token, access_token } = await getGoogleTokens(code);
+  const profile = await getGoogleUser({ id_token, access_token });
+
+  const { user, tokens } = await authService.googleLogin(profile);
+
+  setRefreshTokenCookie(res, tokens.refreshToken);
+
+  // Redirect back to frontend with accessToken in URL
+  res.redirect(`${process.env.CLIENT_URL}/?token=${tokens.accessToken}`);
+});

@@ -10,27 +10,27 @@ import { useDebounce } from '../hooks/useDebounce.js';
 
 function readFiltersFromParams(sp) {
   return {
-    category:   sp.get('category')   || null,
-    sort:       sp.get('sort')       || 'trending',
-    minPrice:   sp.get('minPrice')   || null,
-    maxPrice:   sp.get('maxPrice')   || null,
-    rating:     sp.get('rating')     || null,
-    inStock:    sp.get('inStock')    || null,
+    category: sp.get('category') || null,
+    sort: sp.get('sort') || 'trending',
+    minPrice: sp.get('minPrice') || null,
+    maxPrice: sp.get('maxPrice') || null,
+    rating: sp.get('rating') || null,
+    inStock: sp.get('inStock') || null,
     isFeatured: sp.get('isFeatured') || null,
-    page:       parseInt(sp.get('page')) || 1,
+    page: parseInt(sp.get('page')) || 1,
   };
 }
 
 export default function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [products, setProducts]         = useState([]);
-  const [pagination, setPagination]     = useState(null);
-  const [isLoading, setIsLoading]       = useState(true);
+  const [products, setProducts] = useState([]);
+  const [pagination, setPagination] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   // Derive filters DIRECTLY from URL every render — no useState needed
   // This means navbar link clicks (which change the URL) auto-update filters
-  const filters     = readFiltersFromParams(searchParams);
+  const filters = readFiltersFromParams(searchParams);
   const searchQuery = searchParams.get('q') || '';
   const debouncedSearch = useDebounce(searchQuery, 400);
 
@@ -56,7 +56,8 @@ export default function ProductsPage() {
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
   const applyFilters = (changes) => {
-    const next = { ...filters, ...changes, page: 1 };
+    const next = { ...filters, ...changes };
+    if (!changes.page) next.page = 1; // Reset to page 1 ONLY if it's not a page change
     const params = {};
     Object.entries(next).forEach(([k, v]) => { if (v) params[k] = v; });
     if (searchQuery) params.q = searchQuery;
@@ -74,10 +75,10 @@ export default function ProductsPage() {
   const handleReset = () => setSearchParams({}, { replace: true });
 
   const pageTitle = () => {
-    if (searchQuery)                   return `Search: "${searchQuery}"`;
+    if (searchQuery) return `Search: "${searchQuery}"`;
     if (filters.isFeatured === 'true') return '⭐ Featured Products';
-    if (filters.sort === 'trending')   return '🔥 Trending Products';
-    if (filters.sort === 'newest')     return '✨ New Arrivals';
+    if (filters.sort === 'trending') return '🔥 Trending Products';
+    if (filters.sort === 'newest') return '✨ New Arrivals';
     return 'All Products';
   };
 

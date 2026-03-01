@@ -102,11 +102,20 @@ export default function CheckoutPage() {
   const tax = Math.round(subtotal * 0.18 * 100) / 100;
   const total = subtotal + shipping + tax;
 
+  const defaultAddress = user?.addresses?.find(a => a.isDefault) || user?.addresses?.[0];
+
   const [address, setAddress] = useState({
-    fullName: user?.name || '', phone: user?.phone || '',
-    addressLine1: '', addressLine2: '',
-    city: '', state: '', postalCode: '', country: 'IN',
+    fullName: defaultAddress?.fullName || user?.name || '',
+    phone: defaultAddress?.phone || user?.phone || '',
+    addressLine1: defaultAddress?.addressLine1 || '',
+    addressLine2: defaultAddress?.addressLine2 || '',
+    city: defaultAddress?.city || '',
+    state: defaultAddress?.state || '',
+    postalCode: defaultAddress?.postalCode || '',
+    country: defaultAddress?.country || 'IN',
   });
+
+  const [selectedAddressId, setSelectedAddressId] = useState(defaultAddress?._id || null);
 
   useEffect(() => {
     const resumeOrderId = location.state?.resumeOrderId;
@@ -293,24 +302,68 @@ export default function CheckoutPage() {
 
             {/* Step 0: Address */}
             {step === 0 && (
-              <div className="glass rounded-2xl p-6 space-y-5">
-                <h2 className="text-lg font-display font-semibold text-white flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-gold-400" /> Shipping Address
-                </h2>
-                <div className="grid grid-cols-2 gap-4">
-                  <Input label="Full Name *" value={address.fullName} onChange={e => setAddress(p => ({ ...p, fullName: e.target.value }))} placeholder="John Doe" />
-                  <Input label="Phone *" value={address.phone} onChange={e => setAddress(p => ({ ...p, phone: e.target.value }))} placeholder="9876543210" type="tel" />
+              <div className="space-y-6">
+                {user?.addresses?.length > 0 && (
+                  <div className="glass rounded-2xl p-6 space-y-4">
+                    <h2 className="text-lg font-display font-semibold text-white flex items-center gap-2">
+                      <MapPin className="w-5 h-5 text-gold-400" /> Saved Addresses
+                    </h2>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      {user.addresses.map((addr) => (
+                        <button
+                          key={addr._id}
+                          onClick={() => {
+                            setAddress({
+                              fullName: addr.fullName,
+                              phone: addr.phone,
+                              addressLine1: addr.addressLine1,
+                              addressLine2: addr.addressLine2 || '',
+                              city: addr.city,
+                              state: addr.state,
+                              postalCode: addr.postalCode,
+                              country: addr.country || 'IN',
+                            });
+                            setSelectedAddressId(addr._id);
+                          }}
+                          className={`p-4 rounded-xl border text-left transition-all ${selectedAddressId === addr._id
+                            ? 'border-gold-500 bg-gold-500/10'
+                            : 'border-obsidian-700 hover:border-obsidian-600'
+                            }`}
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                            <span className="text-xs font-bold text-white uppercase tracking-wider">{addr.label || 'Home'}</span>
+                            {selectedAddressId === addr._id && <CheckCircle className="w-4 h-4 text-gold-400" />}
+                          </div>
+                          <p className="text-sm font-semibold text-white truncate">{addr.fullName}</p>
+                          <p className="text-xs text-obsidian-400 mt-1 line-clamp-2">
+                            {addr.addressLine1}, {addr.city}
+                          </p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="glass rounded-2xl p-6 space-y-5">
+                  <h2 className="text-lg font-display font-semibold text-white flex items-center gap-2">
+                    <MapPin className="w-5 h-5 text-gold-400" /> {selectedAddressId ? 'Confirm or Edit Address' : 'Shipping Address'}
+                  </h2>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <Input label="Full Name *" value={address.fullName} onChange={e => setAddress(p => ({ ...p, fullName: e.target.value }))} placeholder="John Doe" />
+                    <Input label="Phone *" value={address.phone} onChange={e => setAddress(p => ({ ...p, phone: e.target.value }))} placeholder="9876543210" type="tel" />
+                  </div>
+                  <Input label="Address Line 1 *" value={address.addressLine1} onChange={e => setAddress(p => ({ ...p, addressLine1: e.target.value }))} placeholder="House no, Street name" />
+                  <Input label="Address Line 2" value={address.addressLine2} onChange={e => setAddress(p => ({ ...p, addressLine2: e.target.value }))} placeholder="Apartment, locality (optional)" />
+                  <div className="grid grid-cols-3 gap-4">
+                    <Input label="City *" value={address.city} onChange={e => setAddress(p => ({ ...p, city: e.target.value }))} placeholder="Mumbai" />
+                    <Input label="State *" value={address.state} onChange={e => setAddress(p => ({ ...p, state: e.target.value }))} placeholder="Maharashtra" />
+                    <Input label="PIN Code *" value={address.postalCode} onChange={e => setAddress(p => ({ ...p, postalCode: e.target.value }))} placeholder="400001" maxLength={6} />
+                  </div>
+                  <Button fullWidth size="lg" onClick={handleAddressNext}>
+                    Continue to Payment <ChevronRight className="w-4 h-4" />
+                  </Button>
                 </div>
-                <Input label="Address Line 1 *" value={address.addressLine1} onChange={e => setAddress(p => ({ ...p, addressLine1: e.target.value }))} placeholder="House no, Street name" />
-                <Input label="Address Line 2" value={address.addressLine2} onChange={e => setAddress(p => ({ ...p, addressLine2: e.target.value }))} placeholder="Apartment, locality (optional)" />
-                <div className="grid grid-cols-3 gap-4">
-                  <Input label="City *" value={address.city} onChange={e => setAddress(p => ({ ...p, city: e.target.value }))} placeholder="Mumbai" />
-                  <Input label="State *" value={address.state} onChange={e => setAddress(p => ({ ...p, state: e.target.value }))} placeholder="Maharashtra" />
-                  <Input label="PIN Code *" value={address.postalCode} onChange={e => setAddress(p => ({ ...p, postalCode: e.target.value }))} placeholder="400001" maxLength={6} />
-                </div>
-                <Button fullWidth size="lg" onClick={handleAddressNext}>
-                  Continue to Payment <ChevronRight className="w-4 h-4" />
-                </Button>
               </div>
             )}
 

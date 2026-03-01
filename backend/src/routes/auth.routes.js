@@ -41,4 +41,8 @@ router.post('/change-password', authenticate, [
 
 router.get('/me', authenticate, authController.getMe);
 
+// Google OAuth
+router.get('/google', authController.googleLogin);
+router.get('/google/callback', authController.googleCallback);
+
 export default router;

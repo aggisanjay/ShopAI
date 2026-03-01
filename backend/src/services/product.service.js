@@ -1,5 +1,6 @@
 
 
+import mongoose from 'mongoose';
 import Product from '../models/Product.model.js';
 import Category from '../models/Category.model.js';
 import { ApiError } from '../utils/apiResponse.js';
@@ -17,7 +18,16 @@ export class ProductService {
     // Build filter
     const filter = { isActive: true, isPublished: true };
 
-    if (query.category) filter.category = query.category;
+    if (query.category) {
+      if (mongoose.Types.ObjectId.isValid(query.category)) {
+        filter.category = query.category;
+      } else {
+        const cat = await Category.findOne({ slug: query.category }).select('_id').lean();
+        if (cat) filter.category = cat._id;
+        else filter.category = new mongoose.Types.ObjectId(); // Fallback to non-existent ID
+      }
+    }
+
     if (query.brand) filter.brand = { $regex: query.brand, $options: 'i' };
     if (query.minPrice || query.maxPrice) {
       filter.price = {};
@@ -133,6 +143,16 @@ export class ProductService {
     const { page, limit, skip } = getPagination(options);
 
     const filter = { $text: { $search: q }, isActive: true, isPublished: true };
+
+    if (options.category) {
+      if (mongoose.Types.ObjectId.isValid(options.category)) {
+        filter.category = options.category;
+      } else {
+        const cat = await Category.findOne({ slug: options.category }).select('_id').lean();
+        if (cat) filter.category = cat._id;
+        else filter.category = new mongoose.Types.ObjectId();
+      }
+    }
 
     const [products, total] = await Promise.all([
       Product.find(filter, { score: { $meta: 'textScore' } })

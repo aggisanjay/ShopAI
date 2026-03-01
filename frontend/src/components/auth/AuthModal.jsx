@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Eye, EyeOff, Mail, Lock, User as UserIcon, Sparkles,
-  Chrome, Github, ArrowLeft, CheckCircle2, AlertCircle,
+  Chrome, ArrowLeft, CheckCircle2, AlertCircle,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { loginUser, registerUser } from '../../store/slices/authSlice.js';
@@ -37,9 +37,8 @@ function PasswordStrength({ password }) {
         {[0, 1, 2, 3].map(i => (
           <div
             key={i}
-            className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-              i < score ? colors[score - 1] : 'bg-obsidian-700'
-            }`}
+            className={`h-1 flex-1 rounded-full transition-all duration-300 ${i < score ? colors[score - 1] : 'bg-obsidian-700'
+              }`}
           />
         ))}
       </div>
@@ -47,9 +46,8 @@ function PasswordStrength({ password }) {
         {checks.map(c => (
           <span
             key={c.label}
-            className={`text-[10px] flex items-center gap-1 transition-colors ${
-              c.ok ? 'text-emerald-400' : 'text-obsidian-500'
-            }`}
+            className={`text-[10px] flex items-center gap-1 transition-colors ${c.ok ? 'text-emerald-400' : 'text-obsidian-500'
+              }`}
           >
             <CheckCircle2 className={`w-2.5 h-2.5 ${c.ok ? 'fill-emerald-400' : ''}`} />
             {c.label}
@@ -205,8 +203,10 @@ export default function AuthModal() {
   };
 
   const handleSocialLogin = (provider) => {
-    // Placeholder — wire up OAuth here
-    console.log(`Login with ${provider}`);
+    if (provider === 'google') {
+      const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      window.location.href = `${BASE_URL}/auth/google`;
+    }
   };
 
   return (
@@ -248,11 +248,10 @@ export default function AuthModal() {
                   <button
                     key={tab}
                     onClick={() => switchTab(tab)}
-                    className={`flex-1 py-2 text-sm font-medium rounded-lg capitalize transition-all ${
-                      activeTab === tab
-                        ? 'bg-gold-500 text-obsidian-900 shadow-sm'
-                        : 'text-obsidian-400 hover:text-white'
-                    }`}
+                    className={`flex-1 py-2 text-sm font-medium rounded-lg capitalize transition-all ${activeTab === tab
+                      ? 'bg-gold-500 text-obsidian-900 shadow-sm'
+                      : 'text-obsidian-400 hover:text-white'
+                      }`}
                   >
                     {tab === 'login' ? 'Sign In' : 'Sign Up'}
                   </button>
@@ -265,11 +264,6 @@ export default function AuthModal() {
                   icon={Chrome}
                   label="Google"
                   onClick={() => handleSocialLogin('google')}
-                />
-                <SocialButton
-                  icon={Github}
-                  label="GitHub"
-                  onClick={() => handleSocialLogin('github')}
                 />
               </div>
 

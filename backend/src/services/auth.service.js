@@ -123,6 +123,39 @@ export class AuthService {
     user.password = newPassword;
     await user.save();
   }
+
+  async googleLogin(profile) {
+    const { id: googleId, email, name, picture: avatar } = profile;
+
+    let user = await User.findOne({ $or: [{ googleId }, { email: email.toLowerCase() }] })
+      .select('+refreshTokens');
+
+    if (!user) {
+      // Create new user
+      user = await User.create({
+        name,
+        email: email.toLowerCase(),
+        googleId,
+        avatar,
+        isEmailVerified: true,
+      });
+    } else if (!user.googleId) {
+      // Link google account to existing email account
+      user.googleId = googleId;
+      if (!user.avatar) user.avatar = avatar;
+      await user.save({ validateBeforeSave: false });
+    }
+
+    if (!user.isActive) throw ApiError.unauthorized('Account has been deactivated');
+
+    // Issue tokens
+    user.lastLogin = new Date();
+    const tokens = generateTokenPair(user);
+    user.refreshTokens = [...(user.refreshTokens || []).slice(-4), tokens.refreshToken];
+    await user.save({ validateBeforeSave: false });
+
+    return { user: user.toSafeObject(), tokens };
+  }
 }
 
 export default new AuthService();

@@ -50,6 +50,21 @@ export default function OrderDetailsPage() {
         fetchOrderDetails();
     }, [id]);
 
+    const handleCancelOrder = async () => {
+        if (!window.confirm('Are you sure you want to cancel this order? This action cannot be undone.')) return;
+
+        try {
+            setLoading(true);
+            await ordersAPI.cancel(id);
+            toast.success('Order cancelled successfully');
+            await fetchOrderDetails();
+        } catch (err) {
+            toast.error(err.response?.data?.message || 'Failed to cancel order');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen pt-20 flex items-center justify-center">
@@ -217,6 +232,24 @@ export default function OrderDetailsPage() {
                                 </Button>
                             </div>
                         )}
+
+                        {['pending', 'confirmed'].includes(order.status) && (
+                            <div className="glass rounded-2xl p-6 border-red-500/10">
+                                <h3 className="text-sm font-semibold text-white mb-2">Need to cancel?</h3>
+                                <p className="text-xs text-obsidian-400 mb-4">
+                                    You can cancel your order as long as it hasn't been processed yet.
+                                </p>
+                                <Button
+                                    fullWidth
+                                    variant="ghost"
+                                    onClick={handleCancelOrder}
+                                    className="text-red-400 hover:text-red-300 hover:bg-red-500/10 border-red-500/20"
+                                >
+                                    <X className="w-4 h-4" /> Cancel Order
+                                </Button>
+                            </div>
+                        )}
+
 
                         {/* Price breakdown */}
                         <div className="glass rounded-2xl p-6 space-y-3">
