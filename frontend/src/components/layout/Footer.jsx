@@ -19,7 +19,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-sm text-obsidian-400 leading-relaxed">
-              Discover products tailored to you with AI-powered personalized recommendations.
+              Discover products tailored to you with personalized recommendations.
             </p>
             <div className="flex items-center gap-3 pt-1">
               {[
@@ -94,7 +94,7 @@ export default function Footer() {
           <div className="flex items-center gap-1">
             <span>Built with</span>
             <span className="text-red-400">♥</span>
-            <span>using MERN + AI</span>
+            <span>using MERN </span>
           </div>
         </div>
       </div>
