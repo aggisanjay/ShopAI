@@ -57,19 +57,16 @@ const startServer = async () => {
     await connectRedis();
     await initializeWorkers();
 
-    if (process.env.NODE_ENV !== 'production') {
-      app.listen(PORT, () => {
-        logger.info(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
-      });
-    }
+    // ✅ Always listen — Render/Railway/Heroku all need this
+    app.listen(PORT, () => {
+      logger.info(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
+    });
+
   } catch (error) {
     logger.error('Failed to start server:', error);
-    if (process.env.NODE_ENV !== 'production') {
-      process.exit(1);
-    }
+    process.exit(1);
   }
 };
-
 // Start server logic
 startServer();
 
