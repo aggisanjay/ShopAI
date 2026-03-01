@@ -412,7 +412,7 @@ export default function HomePage() {
       {/* Personalized (if logged in) */}
       {isAuth && (
         <ProductRow
-          badge={<><Sparkles className="w-3 h-3" /> AI Picks For You</>}
+          badge={<><Sparkles className="w-3 h-3" /> Picks For You</>}
           badgeColor="purple"
           title="Personalized Recommendations"
           viewAllLink="/products"
