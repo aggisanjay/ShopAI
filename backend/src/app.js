@@ -25,35 +25,31 @@ import analyticsRoutes from './routes/analytics.routes.js';
 import uploadRoutes from './routes/upload.routes.js';
 
 const app = express();
+// MANUAL CORS MIDDLEWARE - Highest priority for Vercel/Production reliability
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:5000',
+    'https://shopai-app.netlify.app',
+    process.env.CLIENT_URL,
+  ].filter(Boolean);
 
-// CORS - Moved to top for Vercel/Production reliability
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:5000',
-  'https://shopai-app.netlify.app',
-  process.env.CLIENT_URL,
-].filter(Boolean);
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin) || !origin || process.env.NODE_ENV === 'development') {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  }
 
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
-};
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
 
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Handle preflight for all routes
+  // Handle Preflight (OPTIONS)
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
 
-// Trust proxy (for load balancers)
-app.set('trust proxy', 1);
-
+  next();
+});
 // Security headers
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
