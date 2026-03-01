@@ -6390,3 +6390,32 @@
 2026-03-01 12:24:57 [http]: ::1 - - [01/Mar/2026:06:54:57 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
 2026-03-01 12:24:57 [http]: ::1 - - [01/Mar/2026:06:54:57 +0000] "GET /api/recommendations/personalized?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
 2026-03-01 12:25:19 [http]: ::1 - - [01/Mar/2026:06:55:19 +0000] "POST /api/auth/logout HTTP/1.1" 429 78 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:30:00 [info]: Recomputing trending scores...
+2026-03-01 12:30:00 [info]: Updated trending scores for 7 products
+2026-03-01 12:30:00 [info]: Trending scores recomputed
+2026-03-01 12:37:11 [http]: ::1 - - [01/Mar/2026:07:07:11 +0000] "GET /api/auth/google HTTP/1.1" 302 428 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:37:56 [info]: SIGINT received. Starting graceful shutdown...
+2026-03-01 12:38:04 [info]: ✅ MongoDB Connected: ac-uadbl67-shard-00-01.iiqtqee.mongodb.net
+2026-03-01 12:38:04 [info]: ✅ Redis ready
+2026-03-01 12:38:04 [info]: 🔧 Initializing background workers...
+2026-03-01 12:38:04 [info]: 📧 Email worker ready
+2026-03-01 12:38:04 [info]: 📊 Analytics worker ready
+2026-03-01 12:38:05 [info]: ✅ Redis connected
+2026-03-01 12:38:06 [info]: 🤖 Recommendation worker ready
+2026-03-01 12:38:06 [info]: 🛒 Abandoned cart worker ready
+2026-03-01 12:38:06 [info]: ✅ Background workers initialized
+2026-03-01 12:38:06 [info]: 🚀 Server running on port 5000 in development mode
+2026-03-01 12:38:12 [http]: ::1 - - [01/Mar/2026:07:08:12 +0000] "GET /api/auth/google HTTP/1.1" 302 428 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:38:23 [http]: ::1 - - [01/Mar/2026:07:08:23 +0000] "GET /api/auth/google/callback?iss=https%3A%2F%2Faccounts.google.com&code=4%2F0AfrIepDJ7uVtiAvghmCAUYBErgG7axu0LxsDfbYjQpVhfhKu-1oyrH5o_H9fyQXFnyeAjQ&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+openid&authuser=0&prompt=consent HTTP/1.1" 302 298 "https://accounts.google.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:38:25 [http]: ::1 - - [01/Mar/2026:07:08:25 +0000] "GET /api/auth/me HTTP/1.1" 200 581 "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:38:25 [http]: ::1 - - [01/Mar/2026:07:08:25 +0000] "GET /api/cart HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:38:25 [http]: ::1 - - [01/Mar/2026:07:08:25 +0000] "GET /api/auth/me HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:38:25 [http]: ::1 - - [01/Mar/2026:07:08:25 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:38:25 [http]: ::1 - - [01/Mar/2026:07:08:25 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:38:25 [http]: ::1 - - [01/Mar/2026:07:08:25 +0000] "GET /api/auth/me HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:38:25 [http]: ::1 - - [01/Mar/2026:07:08:25 +0000] "GET /api/recommendations/personalized?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:38:25 [http]: ::1 - - [01/Mar/2026:07:08:25 +0000] "GET /api/categories HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:38:25 [http]: ::1 - - [01/Mar/2026:07:08:25 +0000] "GET /api/products/featured?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:38:26 [http]: ::1 - - [01/Mar/2026:07:08:26 +0000] "GET /api/recommendations/personalized?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:38:26 [http]: ::1 - - [01/Mar/2026:07:08:26 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 200 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
+2026-03-01 12:38:26 [http]: ::1 - - [01/Mar/2026:07:08:26 +0000] "GET /api/products/trending?limit=10 HTTP/1.1" 304 - "http://localhost:5173/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36 Edg/145.0.0.0"
