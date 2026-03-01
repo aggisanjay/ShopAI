@@ -24,6 +24,13 @@ import adminRoutes from './routes/admin.routes.js';
 import analyticsRoutes from './routes/analytics.routes.js';
 import uploadRoutes from './routes/upload.routes.js';
 
+import { connectDB } from './config/database.js';
+import { connectRedis } from './config/redis.js';
+
+// Initialize DB and Redis
+connectDB();
+connectRedis();
+
 const app = express();
 // MANUAL CORS MIDDLEWARE - Highest priority for Vercel/Production reliability
 app.use((req, res, next) => {
@@ -35,21 +42,25 @@ app.use((req, res, next) => {
   ].filter(Boolean);
 
   const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin) || !origin || process.env.NODE_ENV === 'development') {
+  
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else if (process.env.NODE_ENV === 'development') {
     res.setHeader('Access-Control-Allow-Origin', origin || '*');
   }
 
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, x-session-id');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
 
   // Handle Preflight (OPTIONS)
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    return res.status(200).send('OK');
   }
 
   next();
 });
+
 // Security headers
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
