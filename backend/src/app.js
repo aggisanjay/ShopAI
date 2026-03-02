@@ -32,6 +32,8 @@ connectDB();
 connectRedis();
 
 const app = express();
+
+app.set('trust proxy', 1);
 // MANUAL CORS MIDDLEWARE - Highest priority for Vercel/Production reliability
 app.use((req, res, next) => {
   const allowedOrigins = [
