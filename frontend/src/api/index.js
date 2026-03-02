@@ -12,9 +12,8 @@ const api = axios.create({
   timeout: 60000,
 });
 
-// ─── Request Interceptor ────────────────────────────────────────────────────
-let wakeupTimer = null;
 
+// ─── Request Interceptor ─────────────────────────────────────────────────────
 api.interceptors.request.use(
   (config) => {
     const storeObj = getStore();
@@ -30,13 +29,12 @@ api.interceptors.request.use(
     sessionStorage.setItem('sessionId', sessionId);
     config.headers['x-session-id'] = sessionId;
 
-    // ✅ Show "server waking up" toast if request takes more than 4 seconds
-    // (handles Render free tier cold starts)
-    wakeupTimer = setTimeout(() => {
-      toast.loading('⏳ Server is waking up, please wait a moment...', { id: 'wakeup' });
+    // ✅ FIX 2: Show wakeup toast if server takes more than 4s (Render cold start)
+    const wakeupTimer = setTimeout(() => {
+      toast.loading('⏳ Server is waking up, please wait...', { id: 'wakeup' });
     }, 4000);
-
     config._wakeupTimer = wakeupTimer;
+
     return config;
   },
   (error) => Promise.reject(error)
@@ -53,10 +51,10 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-// ─── Response Interceptor ───────────────────────────────────────────────────
+// ─── Response Interceptor ────────────────────────────────────────────────────
 api.interceptors.response.use(
   (response) => {
-    // ✅ Always clear the wakeup toast on success
+    // ✅ FIX 3: Clear wakeup toast on success
     clearTimeout(response.config._wakeupTimer);
     toast.dismiss('wakeup');
     return response;
@@ -64,14 +62,15 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // ✅ Always clear the wakeup toast on any error too
+    // ✅ FIX 3: Always clear wakeup toast on error too
     clearTimeout(originalRequest?._wakeupTimer);
     toast.dismiss('wakeup');
 
-    // ✅ Handle timeout (ECONNABORTED) — DO NOT logout, just retry once
+    // ✅ FIX 4: Handle timeout — retry ONCE, never logout
+    // ECONNABORTED = Render cold start, not an auth failure
     if (error.code === 'ECONNABORTED' && !originalRequest._retried) {
       originalRequest._retried = true;
-      originalRequest.timeout = 60000; // give the retry more time
+      originalRequest.timeout = 60000;
 
       try {
         toast.loading('Retrying request...', { id: 'retry' });
@@ -80,19 +79,39 @@ api.interceptors.response.use(
         return result;
       } catch (retryError) {
         toast.dismiss('retry');
-        toast.error('Server is slow to respond. Please try again in a moment.');
+        toast.error('Server is slow to respond. Please try again shortly.');
         return Promise.reject(retryError);
       }
     }
 
-    // ✅ Network error (no response at all) — DO NOT logout
+    // ✅ FIX 5: Network error (no response) — never logout
     if (!error.response) {
       toast.error('Network error. Check your connection and try again.');
       return Promise.reject({ ...error, message: 'Network error' });
     }
 
-    // ─── 401 Handler — Token Refresh ──────────────────────────────────────
+    // ─── 401 Handler — Token Refresh ────────────────────────────────────────
     if (error.response?.status === 401 && !originalRequest._retry) {
+      // ✅ FIX 6: Skip refresh for /auth/me and /auth/refresh themselves
+      // These endpoints are expected to 401 on fresh/unauthenticated visits
+      const silentUrls = ['/auth/me', '/auth/refresh'];
+      const isSilentUrl = silentUrls.some(url => originalRequest?.url?.includes(url));
+
+      if (isSilentUrl) {
+        // ✅ FIX 7: Only logout if user actually had a session
+        // A fresh phone visitor has no token — don't show "Session expired"
+        const storeObj = getStore();
+        if (storeObj) {
+          const wasLoggedIn = !!storeObj.getState().auth.accessToken;
+          storeObj.dispatch(logout());
+          if (wasLoggedIn) {
+            toast.error('Session expired. Please log in again.');
+          }
+          // No toast for fresh visitors — they were never logged in
+        }
+        return Promise.reject({ ...error, message: 'Unauthorized' });
+      }
+
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
@@ -124,14 +143,20 @@ api.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError, null);
 
-        // ✅ Only logout if the refresh itself failed with a real 401
-        // (not a timeout or network error)
-        if (refreshError.response?.status === 401 || refreshError.response?.status === 403) {
+        // ✅ FIX 8: Only logout + toast if refresh failed with real 401/403
+        // (not a timeout or network error during refresh)
+        if (
+          refreshError.response?.status === 401 ||
+          refreshError.response?.status === 403
+        ) {
           const storeObj = getStore();
           if (storeObj) {
+            const wasLoggedIn = !!storeObj.getState().auth.accessToken;
             storeObj.dispatch(logout());
+            if (wasLoggedIn) {
+              toast.error('Session expired. Please log in again.');
+            }
           }
-          toast.error('Session expired. Please log in again.');
         }
 
         return Promise.reject(refreshError);
@@ -140,11 +165,13 @@ api.interceptors.response.use(
       }
     }
 
-    // ─── Surface Error Message ─────────────────────────────────────────────
+    // ─── Surface Error Message ───────────────────────────────────────────────
     const message = error.response?.data?.message || 'Something went wrong';
     return Promise.reject({ ...error, message });
   }
 );
+
+export default api;
 export default api;
 
 // API modules
