@@ -9,10 +9,12 @@ const api = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
-  timeout: 15000,
+  timeout: 60000,
 });
 
-// Request interceptor — attach access token
+// ─── Request Interceptor ────────────────────────────────────────────────────
+let wakeupTimer = null;
+
 api.interceptors.request.use(
   (config) => {
     const storeObj = getStore();
@@ -22,10 +24,19 @@ api.interceptors.request.use(
         config.headers.Authorization = `Bearer ${token}`;
       }
     }
+
     // Attach session ID for anonymous event tracking
     const sessionId = sessionStorage.getItem('sessionId') || crypto.randomUUID();
     sessionStorage.setItem('sessionId', sessionId);
     config.headers['x-session-id'] = sessionId;
+
+    // ✅ Show "server waking up" toast if request takes more than 4 seconds
+    // (handles Render free tier cold starts)
+    wakeupTimer = setTimeout(() => {
+      toast.loading('⏳ Server is waking up, please wait a moment...', { id: 'wakeup' });
+    }, 4000);
+
+    config._wakeupTimer = wakeupTimer;
     return config;
   },
   (error) => Promise.reject(error)
@@ -42,12 +53,45 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-// Response interceptor — handle 401 & token refresh
+// ─── Response Interceptor ───────────────────────────────────────────────────
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // ✅ Always clear the wakeup toast on success
+    clearTimeout(response.config._wakeupTimer);
+    toast.dismiss('wakeup');
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
 
+    // ✅ Always clear the wakeup toast on any error too
+    clearTimeout(originalRequest?._wakeupTimer);
+    toast.dismiss('wakeup');
+
+    // ✅ Handle timeout (ECONNABORTED) — DO NOT logout, just retry once
+    if (error.code === 'ECONNABORTED' && !originalRequest._retried) {
+      originalRequest._retried = true;
+      originalRequest.timeout = 60000; // give the retry more time
+
+      try {
+        toast.loading('Retrying request...', { id: 'retry' });
+        const result = await api(originalRequest);
+        toast.dismiss('retry');
+        return result;
+      } catch (retryError) {
+        toast.dismiss('retry');
+        toast.error('Server is slow to respond. Please try again in a moment.');
+        return Promise.reject(retryError);
+      }
+    }
+
+    // ✅ Network error (no response at all) — DO NOT logout
+    if (!error.response) {
+      toast.error('Network error. Check your connection and try again.');
+      return Promise.reject({ ...error, message: 'Network error' });
+    }
+
+    // ─── 401 Handler — Token Refresh ──────────────────────────────────────
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
@@ -62,37 +106,45 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const res = await axios.post(`${BASE_URL}/auth/refresh`, {}, { withCredentials: true });
+        const res = await axios.post(
+          `${BASE_URL}/auth/refresh`,
+          {},
+          { withCredentials: true }
+        );
         const { accessToken } = res.data;
+
         const storeObj = getStore();
         if (storeObj) {
           storeObj.dispatch(setCredentials({ accessToken }));
         }
+
         processQueue(null, accessToken);
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return api(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError, null);
-        const storeObj = getStore();
-        if (storeObj) {
-          storeObj.dispatch(logout());
+
+        // ✅ Only logout if the refresh itself failed with a real 401
+        // (not a timeout or network error)
+        if (refreshError.response?.status === 401 || refreshError.response?.status === 403) {
+          const storeObj = getStore();
+          if (storeObj) {
+            storeObj.dispatch(logout());
+          }
+          toast.error('Session expired. Please log in again.');
         }
+
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
       }
     }
 
-    // Surface error message
+    // ─── Surface Error Message ─────────────────────────────────────────────
     const message = error.response?.data?.message || 'Something went wrong';
-    if (error.response?.status !== 401 && error.response?.status !== 404) {
-      // Don't auto-toast for these, let components handle
-    }
-
     return Promise.reject({ ...error, message });
   }
 );
-
 export default api;
 
 // API modules
