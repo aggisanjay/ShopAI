@@ -1,0 +1,55 @@
+{
+  "title": "ShopAI — 05 Checkout & Payments",
+  "uid": "shopai-checkout-payments",
+  "timezone": "browser",
+  "schemaVersion": 36,
+  "refresh": "10s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Orders Created (Rate/min)",
+      "type": "stat",
+      "targets": [{ "expr": "sum(rate(shopai_orders_created_total[5m])) * 60" }],
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 }
+    },
+    {
+      "id": 2,
+      "title": "Payment Success vs Failure",
+      "type": "piechart",
+      "targets": [{ "expr": "sum(rate(shopai_payment_transactions_total[5m])) by (status)" }],
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 }
+    },
+    {
+      "id": 3,
+      "title": "Cart Abandonment Rate (Events/hour)",
+      "type": "stat",
+      "targets": [{ "expr": "sum(rate(shopai_cart_abandonment_events_total[1h])) * 3600" }],
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 }
+    },
+    {
+      "id": 4,
+      "title": "Low Stock Events",
+      "type": "stat",
+      "targets": [{ "expr": "sum(shopai_low_stock_events_total)" }],
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 }
+    },
+    {
+      "id": 5,
+      "title": "Order Creation Over Time",
+      "type": "graph",
+      "targets": [
+        { "expr": "sum(rate(shopai_orders_created_total[5m])) by (payment_method)", "legendFormat": "{{payment_method}}" }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 }
+    },
+    {
+      "id": 6,
+      "title": "Payment Failures & Refunds",
+      "type": "graph",
+      "targets": [
+        { "expr": "sum(rate(shopai_payment_transactions_total{status=~\"failed|refunded\"}[5m])) by (status)", "legendFormat": "{{status}}" }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 }
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "title": "ShopAI — 04 BullMQ Workers",
+  "uid": "shopai-bullmq-workers",
+  "timezone": "browser",
+  "schemaVersion": 36,
+  "refresh": "10s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Waiting Jobs by Queue",
+      "type": "stat",
+      "targets": [{ "expr": "sum(shopai_bullmq_jobs_waiting) by (queue)" }],
+      "gridPos": { "h": 4, "w": 8, "x": 0, "y": 0 }
+    },
+    {
+      "id": 2,
+      "title": "Active Jobs by Queue",
+      "type": "stat",
+      "targets": [{ "expr": "sum(shopai_bullmq_jobs_active) by (queue)" }],
+      "gridPos": { "h": 4, "w": 8, "x": 8, "y": 0 }
+    },
+    {
+      "id": 3,
+      "title": "Failed Jobs Total",
+      "type": "stat",
+      "targets": [{ "expr": "sum(shopai_bullmq_jobs_failed_total)" }],
+      "gridPos": { "h": 4, "w": 8, "x": 16, "y": 0 }
+    },
+    {
+      "id": 4,
+      "title": "Job Completion vs Failure Rate",
+      "type": "graph",
+      "targets": [
+        { "expr": "sum(rate(shopai_bullmq_jobs_completed_total[1m])) by (queue)", "legendFormat": "completed: {{queue}}" },
+        { "expr": "sum(rate(shopai_bullmq_jobs_failed_total[1m])) by (queue)", "legendFormat": "failed: {{queue}}" }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 }
+    },
+    {
+      "id": 5,
+      "title": "Job Duration (p95 seconds)",
+      "type": "graph",
+      "targets": [
+        { "expr": "histogram_quantile(0.95, sum(rate(shopai_bullmq_job_duration_seconds_bucket[5m])) by (le, queue))", "legendFormat": "{{queue}}" }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 }
+    }
+  ]
+}

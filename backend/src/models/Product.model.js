@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
 const variantSchema = new mongoose.Schema({
-  name: String, // e.g., "Color", "Size"
-  value: String, // e.g., "Red", "XL"
+  name: String,
+  value: String,
   sku: String,
   price: Number,
   comparePrice: Number,
@@ -21,15 +21,15 @@ const productSchema = new mongoose.Schema({
 
   // Pricing
   price: { type: Number, required: true, min: 0 },
-  comparePrice: { type: Number, min: 0 }, // original/MRP price
-  costPrice: { type: Number, min: 0, select: false }, // for margin calc
+  comparePrice: { type: Number, min: 0 },
+  costPrice: { type: Number, min: 0, select: false },
 
   // Inventory
   stock: { type: Number, default: 0, min: 0 },
   lowStockThreshold: { type: Number, default: 5 },
   trackInventory: { type: Boolean, default: true },
   allowBackorder: { type: Boolean, default: false },
-  reservedStock: { type: Number, default: 0 }, // held by pending orders
+  reservedStock: { type: Number, default: 0, min: 0 },
 
   // Taxonomy
   category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
@@ -46,7 +46,7 @@ const productSchema = new mongoose.Schema({
   hasVariants: { type: Boolean, default: false },
   variants: [variantSchema],
 
-  // Attributes (for filtering)
+  // Attributes
   attributes: [{
     key: String,
     value: String,
@@ -64,17 +64,17 @@ const productSchema = new mongoose.Schema({
   },
 
   // AI / Recommendation fields
-  embedding: { type: [Number], select: false }, // vector embedding
-  contentVector: { type: [Number], select: false }, // TF-IDF-like features
+  embedding: { type: [Number], select: false },
+  contentVector: { type: [Number], select: false },
   viewCount: { type: Number, default: 0 },
   purchaseCount: { type: Number, default: 0 },
   cartAddCount: { type: Number, default: 0 },
   trendingScore: { type: Number, default: 0 },
 
   // Shipping
-  weight: Number, // in grams
+  weight: Number,
   dimensions: {
-    length: Number, width: Number, height: Number, // in cm
+    length: Number, width: Number, height: Number,
   },
   shippingClass: { type: String, enum: ['standard', 'express', 'heavy', 'fragile'], default: 'standard' },
   freeShipping: { type: Boolean, default: false },
@@ -110,17 +110,17 @@ productSchema.virtual('availableStock').get(function () {
   return Math.max(0, this.stock - this.reservedStock);
 });
 
-// Indexes
+// High-performance compound indexes for production queries
 productSchema.index({ slug: 1 }, { unique: true });
+productSchema.index({ isActive: 1, isPublished: 1, trendingScore: -1, createdAt: -1 });
+productSchema.index({ isActive: 1, isPublished: 1, createdAt: -1 });
+productSchema.index({ isActive: 1, isPublished: 1, price: 1 });
+productSchema.index({ isActive: 1, isPublished: 1, price: -1 });
 productSchema.index({ category: 1, isActive: 1, isPublished: 1 });
-productSchema.index({ brand: 1 });
-productSchema.index({ price: 1 });
-productSchema.index({ rating: -1 });
-productSchema.index({ trendingScore: -1 });
-productSchema.index({ purchaseCount: -1 });
-productSchema.index({ createdAt: -1 });
-productSchema.index({ tags: 1 });
-productSchema.index({ vendor: 1 });
+productSchema.index({ isFeatured: 1, isActive: 1, isPublished: 1 });
+productSchema.index({ brand: 1, isActive: 1, isPublished: 1 });
+productSchema.index({ tags: 1, isActive: 1, isPublished: 1 });
+productSchema.index({ stock: 1, lowStockThreshold: 1, isActive: 1 });
 productSchema.index(
   { name: 'text', description: 'text', brand: 'text', tags: 'text' },
   { weights: { name: 10, brand: 5, tags: 3, description: 1 }, name: 'product_text_index' }

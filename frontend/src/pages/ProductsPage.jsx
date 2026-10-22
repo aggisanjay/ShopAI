@@ -36,24 +36,29 @@ export default function ProductsPage() {
 
   const urlKey = searchParams.toString(); // changes whenever URL changes
 
-  const fetchProducts = useCallback(async () => {
+  const fetchProducts = useCallback(async (signal) => {
     setIsLoading(true);
     try {
       const params = { ...filters };
       Object.keys(params).forEach(k => params[k] == null && delete params[k]);
       const res = debouncedSearch
-        ? await productsAPI.search({ q: debouncedSearch, ...params })
-        : await productsAPI.getAll(params);
+        ? await productsAPI.search({ q: debouncedSearch, ...params }, signal)
+        : await productsAPI.getAll(params, signal);
       setProducts(res.data.products || []);
       setPagination(res.data.pagination || null);
-    } catch {
+    } catch (err) {
+      if (err.name === 'CanceledError' || err.code === 'ERR_CANCELED') return;
       setProducts([]);
     } finally {
       setIsLoading(false);
     }
   }, [urlKey, debouncedSearch]); // eslint-disable-line
 
-  useEffect(() => { fetchProducts(); }, [fetchProducts]);
+  useEffect(() => {
+    const controller = new AbortController();
+    fetchProducts(controller.signal);
+    return () => controller.abort();
+  }, [fetchProducts]);
 
   const applyFilters = (changes) => {
     const next = { ...filters, ...changes };

@@ -1,0 +1,59 @@
+{
+  "title": "ShopAI — 03 MongoDB & Redis",
+  "uid": "shopai-mongodb-redis",
+  "timezone": "browser",
+  "schemaVersion": 36,
+  "refresh": "10s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "MongoDB Connection Status",
+      "type": "stat",
+      "targets": [{ "expr": "shopai_mongodb_connected" }],
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 }
+    },
+    {
+      "id": 2,
+      "title": "Redis Connection Status",
+      "type": "stat",
+      "targets": [{ "expr": "shopai_redis_connected" }],
+      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 }
+    },
+    {
+      "id": 3,
+      "title": "Redis Cache Hit Ratio",
+      "type": "gauge",
+      "targets": [
+        { "expr": "sum(rate(shopai_redis_cache_hits_total[5m])) / (sum(rate(shopai_redis_cache_hits_total[5m])) + sum(rate(shopai_redis_cache_misses_total[5m]))) * 100" }
+      ],
+      "gridPos": { "h": 4, "w": 12, "x": 12, "y": 0 }
+    },
+    {
+      "id": 4,
+      "title": "MongoDB Query Duration (p95 by collection)",
+      "type": "graph",
+      "targets": [
+        { "expr": "histogram_quantile(0.95, sum(rate(shopai_mongodb_operation_duration_seconds_bucket[5m])) by (le, collection))", "legendFormat": "{{collection}}" }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 }
+    },
+    {
+      "id": 5,
+      "title": "Redis Command Latency (p95 by command)",
+      "type": "graph",
+      "targets": [
+        { "expr": "histogram_quantile(0.95, sum(rate(shopai_redis_operation_duration_seconds_bucket[5m])) by (le, command))", "legendFormat": "{{command}}" }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 }
+    },
+    {
+      "id": 6,
+      "title": "Slow MongoDB Queries (>100ms)",
+      "type": "graph",
+      "targets": [
+        { "expr": "sum(rate(shopai_mongodb_slow_queries_total[5m])) by (collection)" }
+      ],
+      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 12 }
+    }
+  ]
+}

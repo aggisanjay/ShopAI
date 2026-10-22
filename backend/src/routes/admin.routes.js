@@ -52,7 +52,7 @@ router.get('/low-stock', asyncHandler(async (req, res) => {
 
 // Cache management
 router.post('/cache/clear', asyncHandler(async (req, res) => {
-  await cacheDelPattern('*');
+  await cacheDelPattern('shopai:v1:*', 'admin_clear');
   ApiResponse.success(res, {}, 'Cache cleared');
 }));
 

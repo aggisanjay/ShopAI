@@ -7,14 +7,20 @@ import { ApiError } from '../utils/apiResponse.js';
 import { getPagination, buildPaginationMeta } from '../utils/pagination.js';
 import { addEmailJob } from '../jobs/email.job.js';
 import { addAnalyticsJob } from '../jobs/analytics.job.js';
+import logger from '../utils/logger.js';
+import {
+  businessOrdersCreatedTotal,
+  businessPaymentTransactionsTotal,
+  businessLowStockEventsTotal,
+} from '../observability/metrics.js';
 
 export class OrderService {
-  async createOrder(userId, { shippingAddress, paymentMethod, couponCode, note }) {
+  async createOrder(userId, { shippingAddress, paymentMethod = 'stripe', couponCode, note }) {
     const session = await mongoose.startSession();
     session.startTransaction();
 
     try {
-      // Fetch user's cart
+      // Fetch user's cart inside transaction
       const cart = await Cart.findOne({ user: userId })
         .populate('items.product')
         .session(session);
@@ -23,22 +29,21 @@ export class OrderService {
         throw ApiError.badRequest('Cart is empty');
       }
 
-      // Validate stock and build order items
       const orderItems = [];
       let subtotal = 0;
 
       for (const item of cart.items) {
         const product = item.product;
         if (!product || !product.isActive || !product.isPublished) {
-          throw ApiError.badRequest(`Product "${product?.name}" is no longer available`);
+          throw ApiError.badRequest(`Product "${product?.name || 'Item'}" is no longer available`);
         }
 
         const availableStock = product.stock - product.reservedStock;
         if (product.trackInventory && availableStock < item.quantity) {
-          throw ApiError.conflict(`Only ${availableStock} units available for "${product.name}"`);
+          throw ApiError.conflict(`Only ${Math.max(0, availableStock)} units available for "${product.name}"`);
         }
 
-        // Reserve stock atomically
+        // Atomically reserve stock inside the transaction
         const updated = await Product.findOneAndUpdate(
           {
             _id: product._id,
@@ -49,7 +54,12 @@ export class OrderService {
         );
 
         if (!updated) {
-          throw ApiError.conflict(`Insufficient stock for "${product.name}"`);
+          throw ApiError.conflict(`Insufficient stock available for "${product.name}"`);
+        }
+
+        // Check low stock threshold
+        if (updated.stock - updated.reservedStock <= updated.lowStockThreshold) {
+          businessLowStockEventsTotal.inc();
         }
 
         const itemTotal = product.price * item.quantity;
@@ -67,7 +77,7 @@ export class OrderService {
         });
       }
 
-      // Coupon validation
+      // Authoritative server-side coupon validation
       let discountAmount = 0;
       if (couponCode) {
         const coupon = await Coupon.findOne({ code: couponCode.toUpperCase() }).session(session);
@@ -81,20 +91,22 @@ export class OrderService {
             discountAmount = Math.min(coupon.value, subtotal);
           }
 
-          await Coupon.findByIdAndUpdate(coupon._id,
+          await Coupon.findByIdAndUpdate(
+            coupon._id,
             { $inc: { usageCount: 1 }, $push: { usedBy: userId } },
             { session }
           );
         }
       }
 
+      // Authoritative pricing calculation
       const shippingCost = subtotal >= 500 ? 0 : 49;
       const taxRate = 0.18;
-      const taxableAmount = subtotal - discountAmount;
+      const taxableAmount = Math.max(0, subtotal - discountAmount);
       const taxAmount = Math.round(taxableAmount * taxRate * 100) / 100;
-      const totalAmount = taxableAmount + shippingCost + taxAmount;
+      const totalAmount = Math.round((taxableAmount + shippingCost + taxAmount) * 100) / 100;
 
-      // Create order
+      // Create order document
       const [order] = await Order.create([{
         user: userId,
         items: orderItems,
@@ -112,29 +124,39 @@ export class OrderService {
         statusHistory: [{ status: 'pending', note: 'Order placed' }],
       }], { session });
 
-      // Clear cart
+      // Clear user cart
       await Cart.findByIdAndDelete(cart._id, { session });
 
       await session.commitTransaction();
 
-      // Post-commit side effects: Send confirmation email
+      businessOrdersCreatedTotal.inc({ payment_method: paymentMethod });
+
+      // Post-commit side effects: Send order confirmation email with idempotent key
       try {
         const User = (await import('../models/User.model.js')).default;
-        const user = await User.findById(userId).select('email').lean();
-        
+        const user = await User.findById(userId).select('email name').lean();
+
         if (user?.email) {
-          await addEmailJob({
-            to: user.email,
-            template: 'orderConfirm',
-            data: order, // Pass full order for detailed summary
-          });
+          await addEmailJob(
+            {
+              to: user.email,
+              template: 'orderConfirm',
+              data: {
+                ...order.toObject(),
+                shippingAddress: {
+                  ...order.shippingAddress,
+                  fullName: order.shippingAddress?.fullName || user.name,
+                },
+              },
+            },
+            { jobId: `order-confirm:${order.orderNumber}` }
+          );
         }
       } catch (emailErr) {
-        logger.error('Failed to queue order confirmation email:', emailErr);
+        logger.warn('Failed to queue order confirmation email:', emailErr.message);
       }
 
-      await addAnalyticsJob({ type: 'order_created', orderId: order._id });
-
+      await addAnalyticsJob({ type: 'order_created', orderId: order._id, totalAmount });
       return order;
     } catch (error) {
       await session.abortTransaction();
@@ -190,24 +212,26 @@ export class OrderService {
     };
 
     if (!validTransitions[order.status]?.includes(status)) {
-      throw ApiError.badRequest(`Cannot transition from ${order.status} to ${status}`);
+      throw ApiError.badRequest(`Cannot transition order from "${order.status}" to "${status}"`);
     }
 
+    const previousStatus = order.status;
     order.status = status;
     order.statusHistory.push({ status, note, updatedBy: adminId });
 
     if (status === 'delivered') order.deliveredAt = new Date();
 
-    // Release reserved stock if cancelled
-    if (status === 'cancelled' || status === 'returned') {
+    // Correct stock transitions:
+    // 1. Cancelled before delivery: release reserved stock
+    if (status === 'cancelled' && ['pending', 'confirmed', 'processing'].includes(previousStatus)) {
       for (const item of order.items) {
         await Product.findByIdAndUpdate(item.product, {
-          $inc: { reservedStock: -item.quantity, ...(status === 'returned' ? { stock: -item.quantity } : {}) },
+          $inc: { reservedStock: -item.quantity },
         });
       }
     }
 
-    // Confirm stock deduction on delivery
+    // 2. Delivered: deduct physical stock and decrement reservedStock
     if (status === 'delivered') {
       for (const item of order.items) {
         await Product.findByIdAndUpdate(item.product, {
@@ -216,9 +240,18 @@ export class OrderService {
       }
     }
 
+    // 3. Returned after delivery: return physical stock to warehouse inventory
+    if (status === 'returned' && ['return_requested', 'delivered'].includes(previousStatus)) {
+      for (const item of order.items) {
+        await Product.findByIdAndUpdate(item.product, {
+          $inc: { stock: item.quantity, purchaseCount: -item.quantity },
+        });
+      }
+    }
+
     await order.save();
 
-    // Send delivery email
+    // Email on delivery
     if (status === 'delivered') {
       try {
         const User = (await import('../models/User.model.js')).default;
@@ -227,11 +260,11 @@ export class OrderService {
           await addEmailJob({
             to: user.email,
             template: 'orderDelivered',
-            data: order,
-          });
+            data: order.toObject(),
+          }, { jobId: `order-delivered:${order.orderNumber}` });
         }
       } catch (err) {
-        logger.error('Failed to queue delivery email:', err);
+        logger.warn('Failed to queue delivery email:', err.message);
       }
     }
 
@@ -248,7 +281,7 @@ export class OrderService {
     order.status = 'cancelled';
     order.statusHistory.push({ status: 'cancelled', note: 'Cancelled by user' });
 
-    // Release reserved stock
+    // Atomically release reserved stock
     for (const item of order.items) {
       await Product.findByIdAndUpdate(item.product, {
         $inc: { reservedStock: -item.quantity },
@@ -263,13 +296,19 @@ export class OrderService {
     const order = await Order.findOne({ stripePaymentIntentId: paymentIntentId });
     if (!order) throw ApiError.notFound('Order not found for payment intent');
 
+    // Idempotency check: if already confirmed/paid, return order immediately
+    if (order.paymentStatus === 'paid' && order.status !== 'pending') {
+      return order;
+    }
+
     order.paymentStatus = 'paid';
     order.stripeChargeId = chargeId;
     order.paidAt = new Date();
     order.status = 'confirmed';
-    order.statusHistory.push({ status: 'confirmed', note: 'Payment confirmed' });
+    order.statusHistory.push({ status: 'confirmed', note: 'Payment confirmed via Stripe' });
 
     await order.save();
+    businessPaymentTransactionsTotal.inc({ status: 'succeeded', payment_method: order.paymentMethod });
     return order;
   }
 }

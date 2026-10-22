@@ -1,16 +1,16 @@
 import express from 'express';
-import cors from 'cors';
 import helmet from 'helmet';
-import morgan from 'morgan';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import mongoSanitize from 'express-mongo-sanitize';
 import rateLimit from 'express-rate-limit';
+
+import { tracingMiddleware } from './middlewares/tracing.middleware.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFound } from './middlewares/notFound.js';
-import logger from './utils/logger.js';
+import { rateLimitHitsTotal } from './observability/metrics.js';
 
-// Routes
+// Route imports
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
 import productRoutes from './routes/product.routes.js';
@@ -23,18 +23,17 @@ import recommendationRoutes from './routes/recommendation.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import analyticsRoutes from './routes/analytics.routes.js';
 import uploadRoutes from './routes/upload.routes.js';
-
-import { connectDB } from './config/database.js';
-import { connectRedis } from './config/redis.js';
-
-// Initialize DB and Redis
-connectDB();
-connectRedis();
+import healthRoutes from './routes/health.routes.js';
+import metricsRoutes from './routes/metrics.routes.js';
 
 const app = express();
 
 app.set('trust proxy', 1);
-// MANUAL CORS MIDDLEWARE - Highest priority for Vercel/Production reliability
+
+// 1. Distributed Tracing & Request Context Middleware
+app.use(tracingMiddleware);
+
+// 2. CORS Handling
 app.use((req, res, next) => {
   const allowedOrigins = [
     'http://localhost:5173',
@@ -44,7 +43,7 @@ app.use((req, res, next) => {
   ].filter(Boolean);
 
   const origin = req.headers.origin;
-  
+
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   } else if (process.env.NODE_ENV === 'development') {
@@ -52,10 +51,9 @@ app.use((req, res, next) => {
   }
 
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, x-session-id');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, x-session-id, x-request-id, x-trace-id');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
 
-  // Handle Preflight (OPTIONS)
   if (req.method === 'OPTIONS') {
     return res.status(200).send('OK');
   }
@@ -63,7 +61,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Security headers
+// 3. Security Headers
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
   contentSecurityPolicy: {
@@ -71,55 +69,55 @@ app.use(helmet({
       defaultSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
+      imgSrc: ["'self'", 'data:', 'https:'],
     },
   },
 }));
 
-
-// Rate limiting
+// 4. Rate Limiting with metric instrumentation
 const globalLimiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
-  max: parseInt(process.env.RATE_LIMIT_MAX) || 100,
+  max: parseInt(process.env.RATE_LIMIT_MAX) || 1000, // 1000 requests per 15 min
   standardHeaders: true,
   legacyHeaders: false,
-  message: { success: false, message: 'Too many requests, please try again later.' },
+  skip: (req) => req.path.startsWith('/health') || req.path.startsWith('/metrics'),
+  handler: (req, res) => {
+    rateLimitHitsTotal.inc({ endpoint_group: 'api_global' });
+    res.status(429).json({
+      success: false,
+      message: 'Too many requests, please try again later.',
+    });
+  },
 });
 app.use('/api/', globalLimiter);
 
-// Strict rate limiter for auth endpoints
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 20,
-  message: { success: false, message: 'Too many auth attempts, try again in 15 minutes.' },
+  max: parseInt(process.env.RATE_LIMIT_AUTH_MAX) || 50,
+  handler: (req, res) => {
+    rateLimitHitsTotal.inc({ endpoint_group: 'auth' });
+    res.status(429).json({
+      success: false,
+      message: 'Too many auth attempts, please try again in 15 minutes.',
+    });
+  },
 });
 
-// Body parsing — raw for Stripe webhooks
+// 5. Body Parsing — raw parsing for Stripe webhooks
 app.use('/api/payments/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 app.use(compression());
 
-// MongoDB injection sanitization
+// 6. Security sanitization
 app.use(mongoSanitize());
 
-// HTTP logging
-app.use(morgan('combined', {
-  stream: { write: (message) => logger.http(message.trim()) },
-}));
+// 7. Core Health & Metrics routes
+app.use('/health', healthRoutes);
+app.use('/metrics', metricsRoutes);
 
-// Health check
-app.get('/health', (req, res) => {
-  res.json({
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    environment: process.env.NODE_ENV,
-  });
-});
-
-// API Routes
+// 8. Application API Routes
 app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
@@ -133,7 +131,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/uploads', uploadRoutes);
 
-// 404 & Error handlers
+// 9. Error Handling
 app.use(notFound);
 app.use(errorHandler);
 

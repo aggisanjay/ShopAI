@@ -1,0 +1,38 @@
+{
+  "title": "ShopAI — 02 Latency & Errors",
+  "uid": "shopai-latency-errors",
+  "timezone": "browser",
+  "schemaVersion": 36,
+  "refresh": "10s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "HTTP Latency Quantiles (p50, p95, p99)",
+      "type": "graph",
+      "targets": [
+        { "expr": "histogram_quantile(0.50, sum(rate(shopai_http_request_duration_seconds_bucket[5m])) by (le))", "legendFormat": "p50" },
+        { "expr": "histogram_quantile(0.95, sum(rate(shopai_http_request_duration_seconds_bucket[5m])) by (le))", "legendFormat": "p95" },
+        { "expr": "histogram_quantile(0.99, sum(rate(shopai_http_request_duration_seconds_bucket[5m])) by (le))", "legendFormat": "p99" }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 }
+    },
+    {
+      "id": 2,
+      "title": "Error Rates by Category",
+      "type": "graph",
+      "targets": [
+        { "expr": "sum(rate(shopai_http_errors_total[2m])) by (error_type)", "legendFormat": "{{error_type}}" }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 }
+    },
+    {
+      "id": 3,
+      "title": "Route-Level p95 Latency",
+      "type": "table",
+      "targets": [
+        { "expr": "histogram_quantile(0.95, sum(rate(shopai_http_request_duration_seconds_bucket[5m])) by (le, route))" }
+      ],
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 8 }
+    }
+  ]
+}

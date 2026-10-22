@@ -1,4 +1,13 @@
 import mongoose from 'mongoose';
+import crypto from 'crypto';
+
+export const generateOrderNumber = () => {
+  const now = new Date();
+  const yearMonth = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const timeSuffix = Date.now().toString().slice(-6);
+  const randomSuffix = crypto.randomBytes(4).toString('hex').toUpperCase();
+  return `ORD${yearMonth}-${timeSuffix}-${randomSuffix}`;
+};
 
 const orderItemSchema = new mongoose.Schema({
   product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
@@ -21,7 +30,7 @@ const statusHistorySchema = new mongoose.Schema({
 }, { _id: false });
 
 const orderSchema = new mongoose.Schema({
-  orderNumber: { type: String }, // auto-generated, unique enforced via index
+  orderNumber: { type: String },
 
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   items: [orderItemSchema],
@@ -82,22 +91,20 @@ const orderSchema = new mongoose.Schema({
   toJSON: { virtuals: true },
 });
 
-// Auto-generate order number
-orderSchema.pre('save', async function (next) {
-  if (!this.isNew) return next();
-  const date = new Date();
-  const prefix = `ORD${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}`;
-  const count = await this.constructor.countDocuments();
-  this.orderNumber = `${prefix}${String(count + 1).padStart(6, '0')}`;
+// Collision-free atomic order number generation
+orderSchema.pre('save', function (next) {
+  if (!this.isNew || this.orderNumber) return next();
+  this.orderNumber = generateOrderNumber();
   next();
 });
 
-// Indexes
+// Optimized compound indexes
 orderSchema.index({ user: 1, createdAt: -1 });
+orderSchema.index({ user: 1, status: 1, createdAt: -1 });
 orderSchema.index({ orderNumber: 1 }, { unique: true, sparse: true });
-orderSchema.index({ status: 1 });
+orderSchema.index({ status: 1, createdAt: -1 });
 orderSchema.index({ paymentStatus: 1 });
-orderSchema.index({ 'stripePaymentIntentId': 1 });
+orderSchema.index({ stripePaymentIntentId: 1 }, { sparse: true });
 orderSchema.index({ createdAt: -1 });
 orderSchema.index({ vendor: 1, status: 1 });
 

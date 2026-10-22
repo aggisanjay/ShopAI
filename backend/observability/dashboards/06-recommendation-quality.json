@@ -1,0 +1,46 @@
+{
+  "title": "ShopAI — 06 Recommendation Quality",
+  "uid": "shopai-recommendation-quality",
+  "timezone": "browser",
+  "schemaVersion": 36,
+  "refresh": "10s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Recommendation CTR (%)",
+      "type": "gauge",
+      "targets": [
+        { "expr": "(sum(rate(shopai_recommendation_clicks_total[10m])) / sum(rate(shopai_recommendation_impressions_total[10m]))) * 100" }
+      ],
+      "gridPos": { "h": 6, "w": 8, "x": 0, "y": 0 }
+    },
+    {
+      "id": 2,
+      "title": "Impressions by Strategy",
+      "type": "piechart",
+      "targets": [
+        { "expr": "sum(rate(shopai_recommendation_impressions_total[10m])) by (strategy)" }
+      ],
+      "gridPos": { "h": 6, "w": 8, "x": 8, "y": 0 }
+    },
+    {
+      "id": 3,
+      "title": "Clicks by Strategy",
+      "type": "piechart",
+      "targets": [
+        { "expr": "sum(rate(shopai_recommendation_clicks_total[10m])) by (strategy)" }
+      ],
+      "gridPos": { "h": 6, "w": 8, "x": 16, "y": 0 }
+    },
+    {
+      "id": 4,
+      "title": "Recommendation Impressions vs Clicks Over Time",
+      "type": "graph",
+      "targets": [
+        { "expr": "sum(rate(shopai_recommendation_impressions_total[5m]))", "legendFormat": "impressions/s" },
+        { "expr": "sum(rate(shopai_recommendation_clicks_total[5m]))", "legendFormat": "clicks/s" }
+      ],
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 6 }
+    }
+  ]
+}

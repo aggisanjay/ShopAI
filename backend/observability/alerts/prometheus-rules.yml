@@ -1,0 +1,82 @@
+groups:
+  - name: shopai-api-alerts
+    rules:
+      - alert: SustainedHighP95Latency
+        expr: histogram_quantile(0.95, sum(rate(shopai_http_request_duration_seconds_bucket[5m])) by (le)) > 0.5
+        for: 3m
+        labels:
+          severity: warning
+          service: shopai-api
+        annotations:
+          summary: "Sustained high p95 HTTP response latency > 500ms"
+          description: "API p95 response time is {{ $value }}s over the last 3 minutes."
+
+      - alert: ElevatedServerErrorRate
+        expr: (sum(rate(shopai_http_errors_total{error_type="server_error"}[5m])) / sum(rate(shopai_http_requests_total[5m]))) * 100 > 2
+        for: 2m
+        labels:
+          severity: critical
+          service: shopai-api
+        annotations:
+          summary: "Elevated 5xx Server Error Rate (> 2%)"
+          description: "Server error rate is {{ $value }}% over the last 2 minutes."
+
+      - alert: MongoDbConnectionFailure
+        expr: shopai_mongodb_connected == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: shopai-database
+        annotations:
+          summary: "MongoDB primary connection down"
+          description: "ShopAI backend has lost connectivity to MongoDB cluster."
+
+      - alert: RedisDegradation
+        expr: shopai_redis_connected == 0
+        for: 2m
+        labels:
+          severity: warning
+          service: shopai-cache
+        annotations:
+          summary: "Redis cache unavailable — database fallback active"
+          description: "ShopAI Redis instance is unreachable; responses are falling back to database."
+
+      - alert: BullMQQueueBacklogGrowth
+        expr: sum(shopai_bullmq_jobs_waiting) by (queue) > 100
+        for: 5m
+        labels:
+          severity: warning
+          service: shopai-workers
+        annotations:
+          summary: "Queue backlog growing in {{ $labels.queue }}"
+          description: "Queue {{ $labels.queue }} has {{ $value }} waiting jobs for more than 5 minutes."
+
+      - alert: BullMQRepeatedJobFailures
+        expr: rate(shopai_bullmq_jobs_failed_total[5m]) > 0.05
+        for: 3m
+        labels:
+          severity: critical
+          service: shopai-workers
+        annotations:
+          summary: "Repeated background job failures detected in {{ $labels.queue }}"
+          description: "Jobs in queue {{ $labels.queue }} are failing repeatedly."
+
+      - alert: PaymentFailureSpike
+        expr: rate(shopai_payment_transactions_total{status="failed"}[10m]) > 0.1
+        for: 5m
+        labels:
+          severity: critical
+          service: shopai-checkout
+        annotations:
+          summary: "Spike in failed payment transactions"
+          description: "Payment failure rate is {{ $value }} failures/sec over the last 10 minutes."
+
+      - alert: LowStockEventSpike
+        expr: rate(shopai_low_stock_events_total[1h]) > 10
+        for: 10m
+        labels:
+          severity: warning
+          service: shopai-inventory
+        annotations:
+          summary: "Multiple inventory items breached low-stock thresholds"
+          description: "Warehouse stock depletion pace is elevated."

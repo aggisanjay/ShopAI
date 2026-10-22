@@ -1,0 +1,37 @@
+{
+  "title": "ShopAI — 01 API Health & Volume",
+  "uid": "shopai-api-health",
+  "timezone": "browser",
+  "schemaVersion": 36,
+  "refresh": "10s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "API Uptime",
+      "type": "stat",
+      "targets": [{ "expr": "time() - process_start_time_seconds{job=\"shopai\"}" }],
+      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 }
+    },
+    {
+      "id": 2,
+      "title": "Total Request Rate (req/s)",
+      "type": "graph",
+      "targets": [{ "expr": "sum(rate(shopai_http_requests_total[1m]))" }],
+      "gridPos": { "h": 4, "w": 9, "x": 6, "y": 0 }
+    },
+    {
+      "id": 3,
+      "title": "Status Code Distribution",
+      "type": "piechart",
+      "targets": [{ "expr": "sum(rate(shopai_http_requests_total[5m])) by (status_code)" }],
+      "gridPos": { "h": 4, "w": 9, "x": 15, "y": 0 }
+    },
+    {
+      "id": 4,
+      "title": "Requests by Route (Top 10)",
+      "type": "table",
+      "targets": [{ "expr": "topk(10, sum(rate(shopai_http_requests_total[5m])) by (route, method))" }],
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 4 }
+    }
+  ]
+}
