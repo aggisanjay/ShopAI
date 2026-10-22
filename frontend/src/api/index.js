@@ -237,6 +237,8 @@ export const adminAPI = {
   getCoupons: () => api.get('/admin/coupons'),
   createCoupon: (data) => api.post('/admin/coupons', data),
   clearCache: () => api.post('/admin/cache/clear'),
+  getObservability: () => api.get('/admin/observability'),
+  getHealth: () => api.get('/health'),
 };
 
 export const uploadsAPI = {

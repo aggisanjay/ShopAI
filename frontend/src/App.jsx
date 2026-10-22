@@ -29,6 +29,7 @@ const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard.jsx'));
 const AdminProducts = lazy(() => import('./pages/admin/AdminProducts.jsx'));
 const AdminOrders = lazy(() => import('./pages/admin/AdminOrders.jsx'));
 const AdminCustomers = lazy(() => import('./pages/admin/AdminCustomers.jsx'));
+const AdminObservability = lazy(() => import('./pages/admin/AdminObservability.jsx'));
 const OrderDetailsPage = lazy(() => import('./pages/OrderDetailsPage.jsx'));
 
 function PageLoader() {
@@ -135,6 +136,9 @@ export default function App() {
             } />
             <Route path="/admin/customers" element={
               <AdminRoute><AdminCustomers /></AdminRoute>
+            } />
+            <Route path="/admin/observability" element={
+              <AdminRoute><AdminObservability /></AdminRoute>
             } />
 
             <Route path="*" element={<NotFound />} />

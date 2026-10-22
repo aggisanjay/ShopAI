@@ -116,6 +116,8 @@ app.use(mongoSanitize());
 // 7. Core Health & Metrics routes
 app.use('/health', healthRoutes);
 app.use('/metrics', metricsRoutes);
+app.use('/api/health', healthRoutes);
+app.use('/api/metrics', metricsRoutes);
 
 // 8. Application API Routes
 app.use('/api/auth', authLimiter, authRoutes);
