@@ -1,102 +1,67 @@
 import { Link } from 'react-router-dom';
-import { Sparkles, Github, Twitter, Instagram, Mail } from 'lucide-react';
+import { Github, Instagram, Twitter, Mail, ArrowUpRight } from 'lucide-react';
+import Logo from '../ui/Logo.jsx';
+import { SITE } from '../../config/site.js';
+
+const COLS = [
+  { title: 'Shop', links: [
+    { label: 'All products', to: '/products' }, { label: 'Trending', to: '/products?sort=trending' },
+    { label: 'New arrivals', to: '/products?sort=newest' }, { label: 'Featured', to: '/products?isFeatured=true' },
+  ] },
+  { title: 'Account', links: [
+    { label: 'My profile', to: '/profile' }, { label: 'My orders', to: '/orders' }, { label: 'Wishlist', to: '/wishlist' },
+  ] },
+  { title: 'Support', links: ['Help centre', 'Contact us', 'Returns', 'Shipping info', 'Privacy policy', 'Terms of service'].map((label) => ({ label, to: '#' })) },
+];
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-
+  const year = new Date().getFullYear();
   return (
-    <footer className="border-t border-obsidian-800 mt-20">
-      <div className="container-app py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-1 space-y-4">
-            <Link to="/" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center shadow-gold">
-                <Sparkles className="w-4 h-4 text-obsidian-900" />
-              </div>
-              <span className="font-display text-xl font-bold">
-                Shop<span className="text-gradient">AI</span>
-              </span>
-            </Link>
-            <p className="text-sm text-obsidian-400 leading-relaxed">
-              Discover products tailored to you with personalized recommendations.
+    <footer className="relative mt-32 overflow-hidden border-t border-white/[0.07]">
+      <div className="container-app pt-16">
+        <div className="grid gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <Link to="/" aria-label="ShopAI home"><Logo markClassName="h-9 w-9" /></Link>
+            <p className="mt-6 max-w-sm font-display text-3xl leading-[1.05] tracking-tight text-obsidian-200">
+              {SITE.tagline.replace('tailored', '')}<span className="italic text-obsidian-400">tailored</span> to you.
             </p>
-            <div className="flex items-center gap-3 pt-1">
-              {[
-                { icon: Twitter, href: '#', name: 'twitter' },
-                { icon: Instagram, href: '#', name: 'instagram' },
-                { icon: Github, href: '#', name: 'github' },
-                { icon: Mail, href: '#', name: 'mail' },
-              ].map(({ icon: Icon, href, name }) => (
-                <a
-                  key={name}
-                  href={href}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg bg-obsidian-800 hover:bg-gold-500/20 text-obsidian-400 hover:text-gold-400 border border-obsidian-700 hover:border-gold-500/30 transition-all"
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                </a>
+            <div className="mt-8 flex items-center gap-2">
+              {[{ I: Twitter, n: 'Twitter' }, { I: Instagram, n: 'Instagram' }, { I: Github, n: 'GitHub' }, { I: Mail, n: 'Email' }].map(({ I, n }) => (
+                <a key={n} href="#" aria-label={n} className="grid h-11 w-11 place-items-center rounded-full border border-white/10 text-obsidian-300 transition-all duration-300 hover:-translate-y-0.5 hover:border-white/30 hover:bg-white/[0.06] hover:text-white"><I className="h-4 w-4" /></a>
               ))}
             </div>
           </div>
-
-          {/* Shop */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-white">Shop</h3>
-            <ul className="space-y-2.5">
-              {['All Products', 'Trending', 'New Arrivals', 'Sale', 'Brands'].map(item => (
-                <li key={item}>
-                  <Link to="/products" className="text-sm text-obsidian-400 hover:text-gold-400 transition-colors">
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Account */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-white">Account</h3>
-            <ul className="space-y-2.5">
-              {[
-                { label: 'My Profile', to: '/profile' },
-                { label: 'My Orders', to: '/orders' },
-                { label: 'Wishlist', to: '/wishlist' },
-                { label: 'Cart', to: '/cart' },
-              ].map(item => (
-                <li key={item.label}>
-                  <Link to={item.to} className="text-sm text-obsidian-400 hover:text-gold-400 transition-colors">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Support */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-white">Support</h3>
-            <ul className="space-y-2.5">
-              {['Help Center', 'Contact Us', 'Returns', 'Shipping Info', 'Privacy Policy', 'Terms of Service'].map(item => (
-                <li key={item}>
-                  <a href="#" className="text-sm text-obsidian-400 hover:text-gold-400 transition-colors">
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
+          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:col-span-7 lg:pl-12">
+            {COLS.map((c) => (
+              <div key={c.title}>
+                <h3 className="eyebrow mb-5 !font-mono !text-[11px]" style={{ fontFamily: 'inherit' }}>{c.title}</h3>
+                <ul className="space-y-3">
+                  {c.links.map((l) => (
+                    <li key={l.label}>
+                      <Link to={l.to} className="group inline-flex items-center gap-1 text-[15px] text-obsidian-200 transition-colors hover:text-white">
+                        {l.label}<ArrowUpRight className="h-3.5 w-3.5 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-60" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="divider mt-12" />
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-obsidian-500">
-          <p>© {currentYear} ShopAI. All rights reserved.</p>
-          <div className="flex items-center gap-1">
-            <span>Built with</span>
-            <span className="text-red-400">♥</span>
-            <span>using MERN </span>
-          </div>
+        <div className="mt-16 flex flex-col items-start justify-between gap-3 border-t border-white/[0.07] py-6 text-[13px] text-obsidian-500 sm:flex-row sm:items-center">
+          <p>© {year} {SITE.name}. All rights reserved.</p>
+          <p>
+            Sneaker model “Materials Variants Shoe” © 2021 Shopify,{' '}
+            <a className="underline underline-offset-4 hover:text-obsidian-200" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>
+          </p>
         </div>
+      </div>
+
+      {/* mega wordmark */}
+      <div aria-hidden="true" className="pointer-events-none select-none overflow-hidden whitespace-nowrap text-center font-display text-[27vw] leading-[0.74] tracking-[-0.06em]"
+        style={{ color: 'transparent', WebkitTextStroke: '1px rgba(255,255,255,0.09)', marginBottom: '-0.04em' }}>
+        ShopAI
       </div>
     </footer>
   );

@@ -4,16 +4,8 @@ import { ApiError } from '../utils/apiResponse.js';
 export const errorHandler = (err, req, res, next) => {
   let error = { ...err };
   error.message = err.message;
-
-  // Log error
-  logger.error({
-    message: err.message,
-    stack: err.stack,
-    url: req.url,
-    method: req.method,
-    ip: req.ip,
-    user: req.user?.id,
-  });
+  error.statusCode = err.statusCode;
+  error.isOperational = err.isOperational;
 
   // Mongoose bad ObjectId
   if (err.name === 'CastError') {
@@ -47,12 +39,34 @@ export const errorHandler = (err, req, res, next) => {
   }
 
   const statusCode = error.statusCode || 500;
-  const message = error.isOperational ? error.message : 'Internal Server Error';
+  const isOperational = error.isOperational ?? false;
+  const message = isOperational ? error.message : 'Internal Server Error';
+
+  // Log errors: only print full stack traces for 5xx or non-operational server bugs
+  if (statusCode >= 500 || !isOperational) {
+    logger.error({
+      message: err.message,
+      stack: err.stack,
+      url: req.url,
+      method: req.method,
+      ip: req.ip,
+      user: req.user?.id,
+    });
+  } else {
+    logger.warn({
+      message: err.message,
+      statusCode,
+      url: req.url,
+      method: req.method,
+      ip: req.ip,
+      user: req.user?.id,
+    });
+  }
 
   res.status(statusCode).json({
     success: false,
     message,
     ...(error.errors && { errors: error.errors }),
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
+    ...(process.env.NODE_ENV === 'development' && statusCode >= 500 && { stack: err.stack }),
   });
 };

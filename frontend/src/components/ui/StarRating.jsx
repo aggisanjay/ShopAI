@@ -1,32 +1,23 @@
 import { Star } from 'lucide-react';
-import { clsx } from 'clsx';
+import { cn } from '../../lib/utils.js';
+
+const sizeMap = { sm: 'h-3.5 w-3.5', md: 'h-4 w-4', lg: 'h-5 w-5' };
 
 export default function StarRating({ rating = 0, count, size = 'sm', interactive = false, onChange }) {
-  const stars = [1, 2, 3, 4, 5];
-  const sizeMap = { sm: 'w-3.5 h-3.5', md: 'w-4 h-4', lg: 'w-5 h-5' };
-
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-1.5" role={interactive ? 'radiogroup' : 'img'} aria-label={`${rating} out of 5 stars`}>
       <div className="flex items-center gap-0.5">
-        {stars.map((star) => (
+        {[1, 2, 3, 4, 5].map((star) => (
           <button
-            key={star}
-            type="button"
+            key={star} type="button" tabIndex={interactive ? 0 : -1}
             onClick={interactive ? () => onChange?.(star) : undefined}
-            className={clsx(!interactive && 'pointer-events-none', interactive && 'hover:scale-110 transition-transform')}
+            className={cn(!interactive && 'pointer-events-none', interactive && 'transition-transform hover:scale-125')}
           >
-            <Star
-              className={clsx(
-                sizeMap[size],
-                star <= rating ? 'fill-gold-400 text-gold-400' : 'fill-obsidian-600 text-obsidian-600'
-              )}
-            />
+            <Star className={cn(sizeMap[size], star <= Math.round(rating) ? 'fill-accent text-accent' : 'fill-obsidian-700 text-obsidian-700')} />
           </button>
         ))}
       </div>
-      {count !== undefined && (
-        <span className="text-xs text-obsidian-400">({count.toLocaleString()})</span>
-      )}
+      {count !== undefined && <span className="tabular text-xs text-obsidian-400">({Number(count).toLocaleString()})</span>}
     </div>
   );
 }

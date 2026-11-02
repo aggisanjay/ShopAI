@@ -10,6 +10,10 @@ import toast from 'react-hot-toast';
 import { fetchCart } from './store/slices/cartSlice.js';
 import { selectIsAuthenticated, selectIsInitialized } from './store/slices/authSlice.js';
 import Navbar from './components/layout/Navbar.jsx';
+import AnnouncementBar from './components/layout/AnnouncementBar.jsx';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import Footer from './components/layout/Footer.jsx';
 import CartDrawer from './components/layout/CartDrawer.jsx';
 import AuthModal from './components/auth/AuthModal.jsx';
@@ -34,10 +38,13 @@ const OrderDetailsPage = lazy(() => import('./pages/OrderDetailsPage.jsx'));
 
 function PageLoader() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="flex items-center gap-3 text-obsidian-400">
-        <div className="w-6 h-6 border-2 border-gold-500/30 border-t-gold-500 rounded-full animate-spin" />
-        <span className="text-sm">Loading...</span>
+    <div className="grid min-h-screen place-items-center" role="status" aria-label="Loading">
+      <div className="flex flex-col items-center gap-5">
+        <div className="relative h-10 w-10">
+          <span className="absolute inset-0 animate-ping2 rounded-full bg-cream/30" />
+          <span className="absolute inset-2 rounded-full bg-cream" />
+        </div>
+        <span className="eyebrow">Loading</span>
       </div>
     </div>
   );
@@ -45,11 +52,12 @@ function PageLoader() {
 
 function NotFound() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-4 text-center">
-      <div className="text-8xl font-display font-bold text-gradient">404</div>
-      <h2 className="text-2xl font-display font-semibold text-white">Page Not Found</h2>
-      <p className="text-obsidian-400">The page you're looking for doesn't exist.</p>
-      <a href="/" className="btn-gold mt-2">Go Home</a>
+    <div className="flex min-h-screen flex-col items-center justify-center px-6 pt-20 text-center">
+      <p className="eyebrow mb-6">Error 404</p>
+      <h1 className="font-display text-[28vw] leading-[0.8] tracking-[-0.05em] sm:text-[18rem]" style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.25)' }}>404</h1>
+      <h2 className="mt-8 font-display text-4xl sm:text-5xl">This page <span className="italic text-obsidian-400">wandered off.</span></h2>
+      <p className="mt-4 max-w-sm text-obsidian-400">The link may be broken, or the page may have moved.</p>
+      <Link to="/" className="btn-primary mt-9 h-14 px-8 text-base">Back to home <ArrowRight className="h-4 w-4" /></Link>
     </div>
   );
 }
@@ -81,7 +89,7 @@ export default function App() {
       url.searchParams.delete('token');
       window.history.replaceState({}, document.title, url.pathname + url.search);
       dispatch(fetchMe());
-      toast.success('Signed in with Google! 🚀');
+      toast.success('Signed in with Google');
     }
   }, [dispatch]);
 
@@ -97,13 +105,15 @@ export default function App() {
   return (
     <>
       <ScrollToTop />
+      <AnnouncementBar />
       <Navbar />
       <CartDrawer />
       <AuthModal />
 
-      <main className="pt-0">
+      <main>
         <Suspense fallback={<PageLoader />}>
-          <Routes>
+          <motion.div key={location.pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}>
+          <Routes location={location}>
             <Route path="/" element={<HomePage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/product/:slug" element={<ProductDetailPage />} />
@@ -143,6 +153,7 @@ export default function App() {
 
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </motion.div>
         </Suspense>
       </main>
 

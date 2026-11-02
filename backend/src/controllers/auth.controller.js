@@ -28,7 +28,11 @@ export const login = asyncHandler(async (req, res) => {
 });
 
 export const refresh = asyncHandler(async (req, res) => {
-  const refreshToken = req.cookies?.refreshToken;
+  const refreshToken = req.cookies?.refreshToken || req.body?.refreshToken;
+  if (!refreshToken) {
+    return ApiResponse.error(res, 'No refresh token provided', 401);
+  }
+
   const tokens = await authService.refreshTokens(refreshToken);
 
   setRefreshTokenCookie(res, tokens.refreshToken);
@@ -37,7 +41,7 @@ export const refresh = asyncHandler(async (req, res) => {
 });
 
 export const logout = asyncHandler(async (req, res) => {
-  const refreshToken = req.cookies?.refreshToken;
+  const refreshToken = req.cookies?.refreshToken || req.body?.refreshToken;
   await authService.logout(req.user.id, refreshToken, res);
   ApiResponse.success(res, {}, 'Logged out successfully');
 });

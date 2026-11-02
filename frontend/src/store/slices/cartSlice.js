@@ -75,7 +75,7 @@ const cartSlice = createSlice({
     builder.addCase(addToCart.pending, (state) => { state.isLoading = true; });
     builder.addCase(addToCart.fulfilled, (state, action) => {
       setCartData(state, action);
-      toast.success('Added to cart! 🛒');
+      toast.success('Added to your bag');
     });
     builder.addCase(addToCart.rejected, (state, action) => {
       state.isLoading = false;

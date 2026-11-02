@@ -4,10 +4,17 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
+  resolve: { alias: { '@': path.resolve(__dirname, './src') } },
+  build: {
+    chunkSizeWarningLimit: 900,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ['three'],
+          r3f: ['@react-three/fiber', '@react-three/drei'],
+          motion: ['framer-motion'],
+        },
+      },
     },
   },
-  
 });
